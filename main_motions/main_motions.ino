@@ -6,9 +6,11 @@
 #include <Arduino.h>
 #include <Servo.h>
 #include "TeensyThreads.h"
-#include <car_basic_motions.ino>
+//#include <car_basic_motions.ino>
 //******************* define motor pins *********************
 //forward
+int countMoves = 0;
+
 const int motor_x1 = 37;      
 const int motor_x2 = 38;
 const int x_speed = 14;
@@ -123,7 +125,7 @@ void loop()
 {
     ledBlink();
     //moveForward();
-    //moveForwardTenCM();
+    moveForwardTen();
     delay(2000);
     //moveLeft();
     //delay(2000);
