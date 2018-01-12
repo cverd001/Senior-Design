@@ -1,4 +1,5 @@
-//
+/*
+
 
 #define START 0
 #define STOP 1
@@ -26,8 +27,7 @@ void searching()
 
 
 
-		*/
-		if(avg_ldr < set_threshold)
+	if(avg_ldr < set_threshold)
 			previous_state = current_state;
 			current_state = STOP;
 		else 
@@ -56,9 +56,9 @@ void searching()
 	{
 		while(true)
 		{
-			pulse_left = 0;
-			pulse_right = 0;
-			angle = angleCalculation(int pulse_left, int pulse_right);
+			ticksL = 0;
+			ticksR = 0;
+			angle = angleCalculation(int ticksL, int ticksR);
 			avg_left = analogRead(left_a) + analogRead(left_b);
 			avg_right = analogRead(right_a) + analogRead(right_b);
 			diff_ldr = avg_right - avg_left;
@@ -88,3 +88,7 @@ void searching()
 		if()
 	}
 }
+
+
+*/
+

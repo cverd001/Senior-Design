@@ -8,21 +8,14 @@
 #include "TeensyThreads.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
-//#include <car_basic_motions.ino>
+
 //******************* define motor pins *********************
-
-//const int speed = 250;
-
-int ticksR = 0;
-int ticksL = 0;
-
 const int motor_x1 = 37;      
 const int motor_x2 = 38;
 const int x_speed = 14;
 const int motor_y1 = 35;
 const int motor_y2 = 36;
 const int y_speed = 16;
-//
 const int motor_a1 = 4;      
 const int motor_a2 = 5;
 const int a_speed = 2;
@@ -53,8 +46,8 @@ int angle = 90;
 int encoder_pinLeft = 22;  // The pin the encoder is connected
 int encoder_pinRight = 23;  
 int flag; 
-volatile int pulse_left = 0;
-volatile int pulse_right = 0;
+volatile int ticksL = 0;
+volatile int ticksR = 0;
 // bluetooth command
 char bluetooth_command;
 char motion_control;
@@ -64,15 +57,15 @@ const int buzzerPin = 17;
 
 
 void encoderCounterLeft(){
-  pulse_left ++;
-  //Serial.print("Left Encoder Ticks: ");   //essential!!!
-  //Serial.println(pulse_left);
+  ticksL ++;
+  //Serial.print("Left Encoder Ticks: ");
+  //Serial.println(ticksL);
 }
 
 void encoderCounterRight(){
-  pulse_right ++;
+  ticksR ++;
   //Serial.print("Rightt Encoder Ticks: ");
-  //Serial.println(pulse_right);
+  //Serial.println(ticksR);
 }
 
 void ledBlink()
@@ -183,29 +176,6 @@ void loop()
     //chirp();
    // delay(6000);
   }  
-   // moveForwardAdj(50);
-    //delay(2000);
-    //moveForwardAdj(10);
-    //delay(2000);
-    
-    //moveLeft();
-    //delay(2000);
-    //moveBack();
-    //delay(2000);
-    //moveRight();
-    //delay(2000);
-    //angle = 120;
-    //encoder_calculation();
-//    lightTracking();
-//    ultrasonicDetection(); //測量角度 並且判斷要往哪一方向移動
-//    switch(move_direction)
-//    {
-//        case 1: moveForward(100); break;
-//        case 2: moveBack(100); break;
-//        case 3: moveRight(100); break;
-//        case 4: moveLeft(100); break;
-//        case 0: brake(100); break; 
-//    }    
 }
 
 
