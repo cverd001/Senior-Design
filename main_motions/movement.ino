@@ -1,4 +1,4 @@
-/*
+
 
 
 #define START 0
@@ -22,17 +22,93 @@ void searching()
 	}
 	case SEARCH:
 	{
-		/*
+    // xmax, ymax are grid definitions: e.g. 5x5
+    // threshold parameter
+    int xpos = 0;
+    int ypos = 0;
+    stopFlag = 0;
+    numTicks = 0;
+    numCid = 0;
+    for (int Cid = 0; Cid < xmax; Cid++)
+    {
+        int ticks = ymax * 30 * 1.6;  //1.6 ticks per cm
+        moveForward();
+        delay(20);
+        pulse_left = 0;
+        pulse_right = 0;
+        while (true)
+        {
+          delay(1);
+          if (pulse_right % 8 == 0) // take reading every 5cm
+          {
+            int temp = readSolarVoltage(); // FIX
+            if (temp > maxSolarV)
+            {
+              maxSolarV = temp;
+              numTicks = (pulse_left + pulse_right) / 2;
+              numCid = Cid;
+            }
+            if (maxSolarV >= thresholdV)
+            {
+              stopFlag = 1; // signals that max threshold has been reached
+              break;
+            }
+          }
+          if (pulse_right >= ticks && pulse_left >= ticks)
+            break;    
+           
+        }
+        brake();
+        if (stopFlag)
+          break;
+        if (Cid % 2 == 0) // if even, turn left
+          turnRight(90);
+        else
+          turnLeft(90);
+        // Move forward 1 grid space
+        moveForward();
+        delay(20);
+        pulse_left = 0;
+        pulse_right = 0;
+        while (true)
+        {
+          delay(1);
+          if (pulse_right % 8 == 0) // take reading every 5cm
+          {
+            int temp = readSolarVoltage(); // FIX
+            if (temp > maxSolarV)
+            {
+              maxSolarV = temp;
+              numTicks = (pulse_left + pulse_right) / 2;
+              numCid = Cid;
+            }
+            if (maxSolarV >= thresholdV)
+            {
+              stopFlag = 1; // signals that max threshold has been reached
+              break;
+            }
+          }
+          if (pulse_right >= 48 && pulse_left >= 48) // 1 grid space
+            break;    
+        }
+        brake();
+        if (stopFlag)
+          break;
+        if (Cid % 2 == 0) // if even, turn right
+          turnRight(90);
+        else
+          turnLeft(90);
+        
+    }
 
-
-
-
-	if(avg_ldr < set_threshold)
-			previous_state = current_state;
-			current_state = STOP;
-		else 
-			continue
-		//go to detailed searching loop
+    if (stopFlag)
+    {
+      current_state = STOP;
+    }
+    else
+    {
+      current_state = RETURN_TO_MAX; // reposition
+    }
 	}
 	case RETURN_TO_MAX:
 	{
@@ -90,5 +166,5 @@ void searching()
 }
 
 
-*/
+
 
