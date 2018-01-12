@@ -1,0 +1,119 @@
+Variance: right - left ticks
+
+
+Speed: 100
+------------------------------------------------------
+Right Ticks: 150
+Left Ticks: 123
+Variance: 27
+How far off: 33
+ 
+ 
+Right Ticks: 217
+Left Ticks: 124
+Variance: 93
+How far off: 101
+ 
+ 
+Right Ticks: 133
+Left Ticks: 127
+Variance: 6
+How far off: 20
+ 
+ 
+Right Ticks: 126
+Left Ticks: 127
+Variance: -1
+How far off: 13
+ 
+ 
+Right Ticks: 158
+Left Ticks: 126
+Variance: 32
+How far off: 44
+ 
+ 
+Right Ticks: 127
+Left Ticks: 127
+Variance: 0
+How far off: 14
+ 
+ 
+Right Ticks: 122
+Left Ticks: 141
+Variance: -19
+How far off: 23
+ 
+ 
+Right Ticks: 128
+Left Ticks: 135
+Variance: -7
+How far off: 23
+ 
+ 
+Right Ticks: 242
+Left Ticks: 130
+Variance: 112
+How far off: 132
+ 
+ 
+Right Ticks: 125
+Left Ticks: 150
+Variance: -25
+How far off: 35
+ 
+ 
+Right Ticks: 125
+Left Ticks: 125
+Variance: 0
+How far off: 10
+ 
+ 
+Right Ticks: 121
+Left Ticks: 125
+Variance: -4
+How far off: 6
+ 
+ 
+Right Ticks: 169
+Left Ticks: 124
+Variance: 45
+How far off: 53
+ 
+ 
+Right Ticks: 126
+Left Ticks: 124
+Variance: 2
+How far off: 10
+ 
+ 
+Right Ticks: 126
+Left Ticks: 178
+Variance: -52
+How far off: 64
+ 
+ 
+Right Ticks: 125
+Left Ticks: 134
+Variance: -9
+How far off: 19
+ 
+ 
+Right Ticks: 122
+Left Ticks: 150
+Variance: -28
+How far off: 32
+ 
+ 
+Right Ticks: 121
+Left Ticks: 124
+Variance: -3
+How far off: 5
+ 
+ 
+Right Ticks: 121
+Left Ticks: 170
+Variance: -49
+How far off: 51
+ 
+ 

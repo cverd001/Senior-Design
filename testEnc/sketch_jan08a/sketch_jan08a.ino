@@ -6,13 +6,11 @@
 #include <Arduino.h>
 #include <Servo.h>
 #include "TeensyThreads.h"
-#include <avr/io.h>
-#include <avr/interrupt.h>
 //#include <car_basic_motions.ino>
 //******************* define motor pins *********************
 
-//const int speed = 250;
-
+const int speed = 150;
+int countMoves = 0;
 int ticksR = 0;
 int ticksL = 0;
 
@@ -53,8 +51,8 @@ int angle = 90;
 int encoder_pinLeft = 22;  // The pin the encoder is connected
 int encoder_pinRight = 23;  
 int flag; 
-volatile int pulse_left = 0;
-volatile int pulse_right = 0;
+int pulse_left = 0;
+int pulse_right = 0;
 // bluetooth command
 char bluetooth_command;
 char motion_control;
@@ -62,18 +60,6 @@ char motion_control;
 const int buzzerPin = 17;
 
 
-
-void encoderCounterLeft(){
-  pulse_left ++;
-  //Serial.print("Left Encoder Ticks: ");   //essential!!!
-  //Serial.println(pulse_left);
-}
-
-void encoderCounterRight(){
-  pulse_right ++;
-  //Serial.print("Rightt Encoder Ticks: ");
-  //Serial.println(pulse_right);
-}
 
 void ledBlink()
 {
@@ -101,6 +87,7 @@ void ledSetupBlink()
 
 void setup()
 {
+    Serial.begin(9600);
     pinMode(motor_x1,OUTPUT);
     pinMode(motor_x2,OUTPUT);
     pinMode(x_speed,OUTPUT);
@@ -122,66 +109,23 @@ void setup()
     pinMode(encoder_pinRight, INPUT);
     pinMode(buzzerPin, OUTPUT);
     
-    myservo.attach(21);
-    attachInterrupt(encoder_pinLeft, encoderCounterLeft, CHANGE);
-    attachInterrupt(encoder_pinRight, encoderCounterRight, CHANGE);
-    Serial.begin(9600);
+
     ledSetupBlink();
     chirp();
     Serial.print("Speed: ");
-    //Serial.println(speed);
+    Serial.println(speed);
     Serial.println("------------------------------------------------------");
-} 
+}
 
 
 void loop()
 {
-  int i = 0;
   while(true)
   {
-    while (i<2){
-    delay(500);
-    moveForwardAdj2(48);
-    delay(500);
-    moveForwardAdj2(48);
-    delay(500);
-    moveForwardAdj2(48);    
-    delay(500);
-    turnRight(33);
-    delay(500);
-    moveForwardAdj2(48);
-    delay(500);
-    turnRight(33);
-    delay(500);
-
-    moveForwardAdj2(48);
-    delay(500);
-    moveForwardAdj2(48);
-    delay(500);
-    moveForwardAdj2(48);    
-    delay(500);
-    turnLeft(27);
-    delay(500);
-    moveForwardAdj2(48);
-    delay(500);
-    turnLeft(27);
-    delay(500);
-
-    i = i +1;
-    }
-    /*
-    turnRight(34);
-    delay(3000);
-    turnRight(34);
-    delay(5000);
-    turnLeft(27);
-    delay(3000);
-    turnLeft(27);
-    delay(5000);
-    */
-    
+    moveForwardAdj2(60);
+    //turn(90);
     //chirp();
-   // delay(6000);
+    delay(6000);
   }  
    // moveForwardAdj(50);
     //delay(2000);
