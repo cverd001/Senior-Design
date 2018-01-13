@@ -8,6 +8,13 @@
 #define MONITOR 4
 #define RETURN_TO_MAX 5
 
+int adc_vol = 0;      // adc reading
+int avg_ldr = 0;    // photoresistors average reading
+int x, y;       // grid cordinates
+int current_state = 0, previous_state = 0;
+const int adc_threshold;  // set threshold
+const int r_threshold;
+
 void searching()
 {
 	//initialize
@@ -15,11 +22,12 @@ void searching()
 
 	switch(current_state)
 	case START: 
-	{
-		x = 0; y = 0;
-		previous_state = current_state;
-		current_state = SEARCH;
-	}
+  {
+    x = 0; y = 0;
+    delay(500);
+    previous_state = current_state;
+    current_state = SEARCH;
+  }
 	case SEARCH:
 	{
     // xmax, ymax are grid definitions: e.g. 5x5
@@ -103,10 +111,12 @@ void searching()
 
     if (stopFlag)
     {
+      previous_state = current_state;
       current_state = STOP;
     }
     else
     {
+      previous_state = current_state;
       current_state = RETURN_TO_MAX; // reposition
     }
 	}
@@ -115,53 +125,74 @@ void searching()
 
 	}
 	case STOP:
-	{
-		delay(1000);
-		if(previous_state == SEARCH)
-		{
-			previous_state = current_state;
-			current_state = SPIN;
-		}
-		if(previous_state == SPIN)
-		{
-			previous_state = current_state;
-			current_state = MONITOR;
-		}
-	}
-	case SPIN:
-	{
-		while(true)
-		{
-			ticksL = 0;
-			ticksR = 0;
-			angle = angleCalculation(int ticksL, int ticksR);
-			avg_left = analogRead(left_a) + analogRead(left_b);
-			avg_right = analogRead(right_a) + analogRead(right_b);
-			diff_ldr = avg_right - avg_left;
+  {
+    delay(1000);
+    if(previous_state == SEARCH)
+    {
+      previous_state = current_state;
+      current_state = SPIN;
+    }
+    if(previous_state == SPIN)
+    {
+      previous_state = current_state;
+      current_state = MONITOR;
+    }
+  }
+	case SPIN:  // RESOLUTION = 12; 132 ticks for turnRight spinning 360; 11 ticks each
+  {
+    int spots[12] = {};
+    int max = 0;
+    int i = 0; 
+    int deg_id = 0;
+    while(true)     // spin 360 degree
+    {
+      for(i = 0; i < 12; i++)
+      {
+        ticksL = 0; ticksR = 0;
+        spots[i] = avg_r;
+        if(spots[i] > max)
+        {
+          max = spots[i];
+          deg_id = i;
+        }
+        if(ticksR < 11)
+        {
+          moveRight();
+        }
+        else
+        {
+          brake();
+          delay(250);
+          continue;
+        }
+      }
+      break;  
+    }
 
-			if(diff_ldr > tolerance)	// should spin left, light: left > right
-			{
-				moveLeft();
-				delay(100);
-				continue
-			}
-			if(diff_ldr < -1*tolerance)
-			{
-				moveRight();
-				delay(100);
-				continue
-			}
-			else	// already find a proper angle, could stop
-			{
-				previous_state = current_state;
-				current_state = STOP;
-				break;
-			}
-		}
-	}
+    while(true)   // spin back
+    {
+      if(ticksR < 11 * deg_id)
+        moveRight();
+      else
+        break;
+    }
+    brake();
+    delay(1000);
+    previous_state = current_state;
+    current_state = STOP;
+  }
 	case MONITOR:
 	{
-		if()
+		while(true)
+    {
+      delay(20000);     // delay 20 sec for demo
+      if(adc_vol >= adc_threshold)
+        continue;       // continue enjoy ample sunlights here!
+      else
+        break;          
+    }
+    previous_state = current_state;
+    current_state = START;  
 	}
 }
 
