@@ -141,7 +141,7 @@ void searching()
 	case SPIN:  // RESOLUTION = 12; 132 ticks for turnRight spinning 360; 11 ticks each
   {
     int spots[12] = {};
-    int max = 0;
+    int spotsMax = 0;
     int i = 0; 
     int deg_id = 0;
     while(true)     // spin 360 degree
@@ -150,9 +150,9 @@ void searching()
       {
         ticksL = 0; ticksR = 0;
         spots[i] = avg_r;
-        if(spots[i] > max)
+        if(spots[i] > spotsMax)
         {
-          max = spots[i];
+          spotsMax = spots[i];
           deg_id = i;
         }
         if(ticksR < 11)
