@@ -4,7 +4,7 @@
  * Created on Nov 10, 2017 10:47 pm
  */
 #include <Arduino.h>
-#include <Servo.h>
+#include <ADC.h>
 #include "TeensyThreads.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -22,38 +22,18 @@ const int a_speed = 2;
 const int motor_b1 = 6;
 const int motor_b2 = 7;
 const int b_speed = 3;
-//**************** define ultrasonic pins *******************
-const int ul_echo = 18;  // rx
-const int ul_trig = 19; // tx
-int Fspeedd = 0; // 前方距離
-int Rspeedd = 0; // 右方距離
-int Lspeedd = 0; // 左方距離
-Servo myservo;
-//**************** define ultrasonic pins *******************
-int move_direction = 1;
-const int go_forward = 1; // 前進
-const int go_right = 3; // 右轉
-const int go_left = 4; // 左轉
-const int go_back = 2; // 倒車
-const int go_brake = 0;
-//************** define light tracking pins ****************
-const int light_a0 = 17;
-int light_value = 0;
 //**********************************************************
 const int ledPin = 13;
-//**********************************************************
-int angle = 90;
+//************* define interrupt related pins **************
 int encoder_pinLeft = 22;  // The pin the encoder is connected
 int encoder_pinRight = 23;  
-int flag; 
 volatile int ticksL = 0;
 volatile int ticksR = 0;
-// bluetooth command
-char bluetooth_command;
-char motion_control;
-
+//*************** define buzzer indicator *****************
 const int buzzerPin = 17;
-
+//************** define solar related pins ****************
+const int adc_read = 20;
+ADC *adc = new ADC(); // adc object;
 
 
 void encoderCounterLeft(){
@@ -108,14 +88,17 @@ void setup()
     pinMode(motor_b2,OUTPUT);
     pinMode(b_speed,OUTPUT);
     
-    pinMode(ul_echo, INPUT); // 定義超音波輸入腳位
-    pinMode(ul_trig, OUTPUT); // 定義超音波輸出腳位 
     pinMode(ledPin, OUTPUT);
     pinMode(encoder_pinLeft, INPUT);
     pinMode(encoder_pinRight, INPUT);
     pinMode(buzzerPin, OUTPUT);
+
+    pinMode(adc_read, INPUT);
+    adc->setAveraging(16); // set number of averages
+    adc->setResolution(16); // set bits of resolution
+    adc->setConversionSpeed(ADC_CONVERSION_SPEED::VERY_LOW_SPEED); // change the conversion speed
+    adc->setSamplingSpeed(ADC_SAMPLING_SPEED::MED_SPEED); // change the sampling speed
     
-    myservo.attach(21);
     attachInterrupt(encoder_pinLeft, encoderCounterLeft, CHANGE);
     attachInterrupt(encoder_pinRight, encoderCounterRight, CHANGE);
     Serial.begin(9600);
