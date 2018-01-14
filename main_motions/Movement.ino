@@ -13,7 +13,10 @@ int adc_vol = 0;      // adc reading
 int avg_r = 0;    // photoresistors average reading
 int x, y;       // grid cordinates
 int xmax, ymax;
+int updown = 3; //flag to check if robot was moving up/down or left/right when max sunlight was acquired. If updown is not 0 or 1 when checked results in error.
 int current_state = 0, previous_state = 0;
+int maxSolarV  = 0; 
+int thresholdV; //FIX
 const int adc_threshold = 0;  // adc reading threshold
 const int r_threshold = 0;    // average photoresistors threshold 
 
@@ -37,10 +40,12 @@ void searching()
     // threshold parameter
     int xpos = 0;
     int ypos = 0;
-    int updown = 3; //flag to check if robot was moving up/down or left/right when max sunlight was acquired. If updown is not 0 or 1 when checked results in error.
-    int stopFlag = 0;
-    int numTicks = 0;
-    int numCid = 0;
+    updown = 3; //flag to check if robot was moving up/down or left/right when max sunlight was acquired. If updown is not 0 or 1 when checked results in error.
+    int stopFlag = 0; //flag to stop if sunlight has passed threshold
+    int numTicks = 0; //number of ticks at optimal sunlight
+    int numCid = 0; //column id at optimal sunlight 
+    int ticksL; // current number of ticks Left
+    int ticksR; // current number of ticks Right
     for (int Cid = 0; Cid < xmax; Cid++)
     {
         int ticks = ymax * 30 * 1.6;  //1.6 ticks per cm
