@@ -9,15 +9,27 @@
 #define RETURN_TO_MAX 5
 #define TRACKING 6
 
+int xmax, ymax; // grid dimensions
+
+int ticksL; // current tick count Left
+int ticksR; // current tick count Right
+
+/* flag to check if robot was moving up/down or left/right 
+   when max sunlight was acquired. If this flag is not 0 or 
+   1 when checked results in error.
+   directionFlag = 1: was moving vertically
+   directionFlag = 0: was moving horizontally
+   directionFlag = anything else: ERROR */
+int directionFlag;
+
 int maxSolarV = 14;
 int adc_vol = 0;      // adc reading
 int avg_ldr = 0;    // photoresistors average reading
-int x, y;       // grid cordinates
-int xmax, ymax;
-int current_state = 0, previous_state = 0;
-int dtime = 5000;          // delay time for each tracking movement
 const int thresholdV = 14;  // adc reading threshold
 const int ldr_threshold = 0;    // average photoresistors threshold 
+
+int current_state = 0, previous_state = 0;
+int dtime = 5000;          // delay time for each tracking movement
 
 void searching()
 {
@@ -28,24 +40,21 @@ void searching()
   {
     case START: 
     {
-      x = 0; y = 0;
       delay(500);
       previous_state = current_state;
       current_state = SEARCH;
     }
     case SEARCH:
     {
-    // xmax, ymax are grid definitions: e.g. 5x5
-    // threshold parameter
-    int xpos = 0;
-    int ypos = 0;
-    int updown = 3; //flag to check if robot was moving up/down or left/right when max sunlight was acquired. If updown is not 0 or 1 when checked results in error.
-    int stopFlag = 0;
-    int numTicks = 0;
-    int numCid = 0;
+    directionFlag = -1; // -1 is used as debugging check
+    int stopFlag = 0; //Flag to indicate if threshold sunlight voltage has been found
+    
+    int optTicks = 0; // number of ticks for desired location
+    int optCid = 0; // column number for desired location
+    
     for (int Cid = 0; Cid < xmax; Cid++)
     {
-        int ticks = ymax * 30 * 1.6;  //1.6 ticks per cm
+        int maxTicks = (ymax - 1) * 30 * 1.6;  // 1.6 ticks per cm
         moveForward();
         delay(20);
         ticksL = 0;
@@ -55,15 +64,15 @@ void searching()
           delay(1);
           if (ticksR % 8 == 0) // take reading every 5cm
           {
-            int adc_vol = readSolarVoltage(); // FIX
+            int adc_vol = readPhotoresistors(); // change to double/float?
             if (adc_vol > maxSolarV)
             {
               maxSolarV = adc_vol;
-              numTicks = (ticksL + ticksR) / 2;
-              numCid = Cid;
+              optTicks = (ticksL + ticksR) / 2;
+              optCid = Cid;
               if (Cid % 2 == 1)
-                numTicks = ticks - numTicks; //maxTicks - tick number when bot is going down instead of up
-              updown = 1; //flag, bot was moving up/down
+                optTicks = maxTicks - optTicks; // maxTicks - tick number when bot is going down instead of up
+              directionFlag = 1; // flag, bot was moving up/down
             }
             if (maxSolarV >= thresholdV)
             {
@@ -71,17 +80,18 @@ void searching()
               break;
             }
           }
-          if (ticksR >= ticks && ticksL >= ticks)
+          if (ticksR >= maxTicks && ticksL >= maxTicks)
             break;    
            
         }
         brake();
         if (stopFlag)
           break;
-        if (Cid % 2 == 0) // if even, turn left
+        if (Cid % 2 == 0) // if even, turn right
           turnRight(90);
         else
           turnLeft(90);
+          
         // Move forward 1 grid space
         moveForward();
         delay(20);
@@ -96,9 +106,9 @@ void searching()
             if (adc_vol > maxSolarV)
             {
               maxSolarV = adc_vol;
-              numTicks = (ticksL + ticksR) / 2; // how many ticks to the right of Cid
-              numCid = Cid;
-              updown = 0;
+              optTicks = (ticksL + ticksR) / 2; // how many ticks to the right of Cid
+              optCid = Cid;
+              directionFlag = 0; // flag, bot was moving right
             }
             if (maxSolarV >= thresholdV)
             {
@@ -112,6 +122,7 @@ void searching()
         brake();
         if (stopFlag)
           break;
+          
         if (Cid % 2 == 0) // if even, turn right
           turnRight(90);
         else
@@ -132,42 +143,50 @@ void searching()
     }
     case RETURN_TO_MAX:
     {
-    //numTicks, numCid
-    if (updown == 0) // was moving right when max sunlight detected
+    //using optTicks, optCid, directionFlag parameters
+    int xTicks = 0; // number of ticks bot must move along x-axis
+    int yTicks = 0; // number of ticks bot must move along y-axis
+    int zTicks = 0; // pythagorean theorem
+    int zDegrees = 0; // degrees of triangle
+    
+    if (directionFlag == 0) // was moving right when max sunlight detected
     {
-      int xTicks = (xmax - numCid - 1) * 48 - numTicks;
-      if ((xmax - 1 + numCid) % 2 == 0) // same edge of grid as max sunlight location
-        int yTicks = 0;
+      xTicks = (xmax - optCid - 1) * 48 - optTicks;
+      if ((xmax - 1 + optCid) % 2 == 0) 
+        yTicks = 0; // same edge of grid as max sunlight location
       else 
-        int yTicks = 48 * (ymax - 1); //opposite edge of grid
+        yTicks = 48 * (ymax - 1); // opposite edge of grid
     }
-    else if (updown == 1) // was moving up/down when max sunlight detected
+    else if (directionFlag == 1) // was moving up/down when max sunlight detected
     {
-      int xTicks = (xmax - numCid - 1) * 48;
+      xTicks = (xmax - optCid - 1) * 48;
       if (xmax % 2 == 0) // same x-edge of origin
-        int yTicks = numTicks;
+        yTicks = optTicks;
       else
-        int yTicks = 48 * (ymax - 1) - numTicks;
+        yTicks = 48 * (ymax - 1) - optTicks;
     }
     else
-      Serial.println("ERROR: updown != 0,1");
+      Serial.println("ERROR: directionFlag != 0,1");
 
-    int zTicks = sqrt(xTicks^2 + yTicks^2);
-    int zDegrees;
+    zTicks = sqrt(xTicks^2 + yTicks^2);
+
     if (yTicks == 0)
       zDegrees = 90;
     else
       zDegrees =  round( atan2 (xTicks, yTicks) * 180/3.14159265 ); // radians to degrees and rounding
       
-    if (xmax % 2 == 0) // same x-edge of origin
-      turnRight(180 - zDegrees);
+    if (xmax % 2 == 0) 
+      turnRight(180 - zDegrees); // same x-edge of origin (on the bottom)
     else
-      turnLeft(180 - zDegrees);
-
+      turnLeft(180 - zDegrees); // (on the top)
+      
+    moveForwardTicks(zTicks); // FIX
+    
     delay(1000);
     previous_state = current_state;
     current_state = SPIN;
     }
+    
     case STOP:
     {
       delay(1000);
