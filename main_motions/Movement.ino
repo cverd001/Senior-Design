@@ -244,16 +244,18 @@ void searching()
       int ldrR, ldrL;
       int diffRL = ldrL - ldrR;
       int tol = 0;  // FIX
-      int deg_id = 0, deg_id = 0;
+      int deg_id = 0;
       while(true)
       {
+        ldrR = analogRead(ldrRPin);  // FIX
+        ldrL = analogRead(ldrLPin);   // FIX
         if(deg_id >= 22)  // already checked 360 degrees, should continue searching the area
         {
           previous_state = current_state;
           current_state = START;
           break;
         }
-        elseif (-1*tol > diffRL || diffRL > tol) // check if the diffirence is in the tolerance else change horizontal angle
+        else if (-1*tol > diffRL || diffRL > tol) // check if the diffirence is in the tolerance else change horizontal angle
         {
           ticksR = 0; ticksL = 0;
           if(ldrL > ldrR)   // left R bigger, left sunlight weaker, slightly spin right
@@ -267,7 +269,7 @@ void searching()
                 continue;
             }
           }
-          elseif(ldrL < ldrR) // right R bigger, right sunlight weaker, slightly spin left
+          else if(ldrL < ldrR) // right R bigger, right sunlight weaker, slightly spin left
           {
             deg_id ++;
             while(true)    
@@ -278,7 +280,7 @@ void searching()
                 continue;
             }
           }
-          elseif(ldrL == ldrR)
+          else if(ldrL == ldrR)
           {
           }
         }
