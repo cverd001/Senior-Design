@@ -7,18 +7,17 @@
 #define SEARCH 3
 #define MONITOR 4
 #define RETURN_TO_MAX 5
+#define TRACKING 6
 
 int maxSolarV = 14;
 int adc_vol = 0;      // adc reading
-int avg_r = 0;    // photoresistors average reading
+int avg_ldr = 0;    // photoresistors average reading
 int x, y;       // grid cordinates
 int xmax, ymax;
-int updown = 3; //flag to check if robot was moving up/down or left/right when max sunlight was acquired. If updown is not 0 or 1 when checked results in error.
 int current_state = 0, previous_state = 0;
-int maxSolarV  = 0; 
-int thresholdV; //FIX
-const int adc_threshold = 0;  // adc reading threshold
-const int r_threshold = 0;    // average photoresistors threshold 
+int dtime = 5000;          // delay time for each tracking movement
+const int thresholdV = 14;  // adc reading threshold
+const int ldr_threshold = 0;    // average photoresistors threshold 
 
 void searching()
 {
@@ -35,17 +34,15 @@ void searching()
       current_state = SEARCH;
     }
     case SEARCH:
-  {
+    {
     // xmax, ymax are grid definitions: e.g. 5x5
     // threshold parameter
     int xpos = 0;
     int ypos = 0;
-    updown = 3; //flag to check if robot was moving up/down or left/right when max sunlight was acquired. If updown is not 0 or 1 when checked results in error.
-    int stopFlag = 0; //flag to stop if sunlight has passed threshold
-    int numTicks = 0; //number of ticks at optimal sunlight
-    int numCid = 0; //column id at optimal sunlight 
-    int ticksL; // current number of ticks Left
-    int ticksR; // current number of ticks Right
+    int updown = 3; //flag to check if robot was moving up/down or left/right when max sunlight was acquired. If updown is not 0 or 1 when checked results in error.
+    int stopFlag = 0;
+    int numTicks = 0;
+    int numCid = 0;
     for (int Cid = 0; Cid < xmax; Cid++)
     {
         int ticks = ymax * 30 * 1.6;  //1.6 ticks per cm
@@ -132,9 +129,9 @@ void searching()
       previous_state = current_state;
       current_state = RETURN_TO_MAX; // reposition
     }
-  }
-  case RETURN_TO_MAX:
-  {
+    }
+    case RETURN_TO_MAX:
+    {
     //numTicks, numCid
     if (updown == 0) // was moving right when max sunlight detected
     {
@@ -170,7 +167,7 @@ void searching()
     delay(1000);
     previous_state = current_state;
     current_state = SPIN;
-  }
+    }
     case STOP:
     {
       delay(1000);
@@ -196,7 +193,7 @@ void searching()
         for(i = 0; i < 12; i++)
         {
           ticksL = 0; ticksR = 0;
-          spots[i] = avg_r;
+          spots[i] = avg_ldr;
           if(spots[i] > spotsMax)
           {
             spotsMax = spots[i];
@@ -234,17 +231,59 @@ void searching()
       {
         delay(20000);     // delay 20 sec for demo
         adc_vol = readSolarVoltage();
-        if(adc_vol >= adc_threshold)
+        if(adc_vol >= thresholdV)
           continue;       // continue enjoy ample sunlights here!
         else
           break;          
       }
       previous_state = current_state;
-      current_state = START;  
+      current_state = TRACKING;  
+    }
+    case TRACKING:
+    {
+      int ldrR, ldrL;
+      int diffRL = ldrL - ldrR;
+      int tol = 0;  // FIX
+      int deg_id = 0, deg_id = 0;
+      while(true)
+      {
+        if(deg_id >= 22)  // already checked 360 degrees, should continue searching the area
+        {
+          previous_state = current_state;
+          current_state = START;
+          break;
+        }
+        elseif (-1*tol > diffRL || diffRL > tol) // check if the diffirence is in the tolerance else change horizontal angle
+        {
+          ticksR = 0; ticksL = 0;
+          if(ldrL > ldrR)   // left R bigger, left sunlight weaker, slightly spin right
+          {
+            deg_id ++;
+            while(true)     // RESOLUTION = 22; 132 ticks for turnRight spinning 360; 6 ticks each
+            {
+              if(ticksR < 6)
+                moveRight();
+              else
+                continue;
+            }
+          }
+          elseif(ldrL < ldrR) // right R bigger, right sunlight weaker, slightly spin left
+          {
+            deg_id ++;
+            while(true)    
+            {
+              if(ticksR < 6)
+                moveLeft();
+              else
+                continue;
+            }
+          }
+          elseif(ldrL == ldrR)
+          {
+          }
+        }
+        delay(dtime);
+      }
     }
   }
 }
-
-
-
-
