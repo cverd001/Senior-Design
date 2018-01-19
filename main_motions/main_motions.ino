@@ -8,7 +8,6 @@
 #include "TeensyThreads.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
-
 //******************* define motor pins *********************
 const int motor_x1 = 37;      
 const int motor_x2 = 38;
@@ -74,6 +73,33 @@ void ledSetupBlink()
 
 void setup()
 {
+
+    //----------------------Unused Pins--------------------------
+    // set unused I/O pins to Output mode to save power
+    pinMode(8,OUTPUT);
+    pinMode(9,OUTPUT);
+    pinMode(10,OUTPUT);
+    pinMode(11,OUTPUT);
+    pinMode(12,OUTPUT);
+    pinMode(24,OUTPUT);
+    pinMode(25,OUTPUT);
+    pinMode(26,OUTPUT);
+    pinMode(27,OUTPUT);
+    pinMode(28,OUTPUT);
+    pinMode(29,OUTPUT);
+    pinMode(30,OUTPUT);
+    pinMode(32,OUTPUT);
+    
+    pinMode(21,OUTPUT);
+    pinMode(20,OUTPUT);
+    pinMode(19,OUTPUT);
+    pinMode(18,OUTPUT);
+    pinMode(15,OUTPUT);
+    pinMode(13,OUTPUT);
+    pinMode(33,OUTPUT);
+    pinMode(34,OUTPUT);
+//---------------------------------------------------
+  
     pinMode(motor_x1,OUTPUT);
     pinMode(motor_x2,OUTPUT);
     pinMode(x_speed,OUTPUT);
@@ -117,28 +143,28 @@ void loop()
   {
     while (i<2){
     delay(500);
-    moveForwardAdj2(48);
+    moveForwardAdj2(46);  //was  48
     delay(500);
-    moveForwardAdj2(48);
+    moveForwardAdj2(46);
     delay(500);
-    moveForwardAdj2(48);    
+    moveForwardAdj2(46);    
     delay(500);
     turnRight(33);
     delay(500);
-    moveForwardAdj2(48);
+    moveForwardAdj2(46);
     delay(500);
     turnRight(33);
     delay(500);
 
-    moveForwardAdj2(48);
+    moveForwardAdj2(46);
     delay(500);
-    moveForwardAdj2(48);
+    moveForwardAdj2(46);
     delay(500);
-    moveForwardAdj2(48);    
+    moveForwardAdj2(46);    
     delay(500);
     turnLeft(27);
     delay(500);
-    moveForwardAdj2(48);
+    moveForwardAdj2(46);
     delay(500);
     turnLeft(27);
     delay(500);

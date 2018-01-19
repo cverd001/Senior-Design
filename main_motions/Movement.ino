@@ -10,9 +10,11 @@
 #define TRACKING 6
 
 int xmax, ymax; // grid dimensions
+int optTicks = 0; // number of ticks for desired location
+int optCid = 0; // column number for desired location
 
-int ticksL; // current tick count Left
-int ticksR; // current tick count Right
+//int ticksL; // current tick count Left
+//int ticksR; // current tick count Right
 
 /* flag to check if robot was moving up/down or left/right 
    when max sunlight was acquired. If this flag is not 0 or 
@@ -49,9 +51,6 @@ void searching()
     directionFlag = -1; // -1 is used as debugging check
     int stopFlag = 0; //Flag to indicate if threshold sunlight voltage has been found
     
-    int optTicks = 0; // number of ticks for desired location
-    int optCid = 0; // column number for desired location
-    
     for (int Cid = 0; Cid < xmax; Cid++)
     {
         int maxTicks = (ymax - 1) * 30 * 1.6;  // 1.6 ticks per cm
@@ -64,7 +63,7 @@ void searching()
           delay(1);
           if (ticksR % 8 == 0) // take reading every 5cm
           {
-            int adc_vol = readPhotoresistors(); // change to double/float?
+            float adc_vol = readPhotoresistors(); // change to double/float?
             if (adc_vol > maxSolarV)
             {
               maxSolarV = adc_vol;
@@ -180,7 +179,7 @@ void searching()
     else
       turnLeft(180 - zDegrees); // (on the top)
       
-    moveForwardTicks(zTicks); // FIX
+    //moveForwardTicks(zTicks); // FIX
     
     delay(1000);
     previous_state = current_state;
@@ -266,8 +265,8 @@ void searching()
       int deg_id = 0;
       while(true)
       {
-        ldrR = analogRead(ldrRPin);  // FIX
-        ldrL = analogRead(ldrLPin);   // FIX
+        //ldrR = analogRead(ldrRPin);  // FIX
+        //ldrL = analogRead(ldrLPin);   // FIX
         if(deg_id >= 22)  // already checked 360 degrees, should continue searching the area
         {
           previous_state = current_state;

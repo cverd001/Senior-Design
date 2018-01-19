@@ -6,8 +6,13 @@ float readSolarVoltage()
   return (1+R1/R2)*value*3.3/adc->getMaxValue(ADC_0);
 }
 
-float readPhotoresisters()
+
+float readPhotoresistors()
 {
-  
+  float x;
+ return x;
 }
+
+
+
 
