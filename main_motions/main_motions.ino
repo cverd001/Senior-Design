@@ -8,6 +8,8 @@
 #include "TeensyThreads.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
+//#include "Buzzer.ino"
+
 //******************* define motor pins *********************
 const int motor_x1 = 37;      
 const int motor_x2 = 38;
@@ -141,6 +143,18 @@ void loop()
   int i = 0;
   while(true)
   {
+    searching();
+    delay(500);
+    chirp();
+    delay(500);
+    chirp();
+    delay(500);
+    bootTone();
+    delay(500);
+    startTone();
+    
+    delay(6000);
+    /*
     while (i<2){
     delay(500);
     moveForwardAdj2(46);  //was  48
@@ -171,6 +185,7 @@ void loop()
 
     i = i +1;
     }
+    
     /*
     turnRight(34);
     delay(3000);
@@ -180,10 +195,10 @@ void loop()
     delay(3000);
     turnLeft(27);
     delay(5000);
-    */
+    
     
     //chirp();
-   // delay(6000);
+   // delay(6000);*/
   }  
 }
 

@@ -24,7 +24,7 @@ int optCid = 0; // column number for desired location
    directionFlag = anything else: ERROR */
 int directionFlag;
 
-int maxSolarV = 14;
+int maxSolarV = 0;
 int adc_vol = 0;      // adc reading
 int avg_ldr = 0;    // photoresistors average reading
 const int thresholdV = 14;  // adc reading threshold
@@ -36,7 +36,7 @@ int dtime = 5000;          // delay time for each tracking movement
 void searching()
 {
   //initialize
-  current_state = START;
+  current_state = SEARCH; // test
 
   switch(current_state)
   {
@@ -48,6 +48,8 @@ void searching()
     }
     case SEARCH:
     {
+      xmax = 5; // test
+      ymax = 5; // test
     directionFlag = -1; // -1 is used as debugging check
     int stopFlag = 0; //Flag to indicate if threshold sunlight voltage has been found
     
@@ -63,7 +65,8 @@ void searching()
           delay(1);
           if (ticksR % 8 == 0) // take reading every 5cm
           {
-            float adc_vol = readPhotoresistors(); // change to double/float?
+            //float adc_vol = readPhotoresistors(); // change to double/float?
+            float adc_vol = 0; // test
             if (adc_vol > maxSolarV)
             {
               maxSolarV = adc_vol;
@@ -87,9 +90,9 @@ void searching()
         if (stopFlag)
           break;
         if (Cid % 2 == 0) // if even, turn right
-          turnRight(90);
+          turnRight(46);
         else
-          turnLeft(90);
+          turnLeft(30);
           
         // Move forward 1 grid space
         moveForward();
@@ -101,7 +104,8 @@ void searching()
           delay(1);
           if (ticksR % 8 == 0) // take reading every 5cm
           {
-            int adc_vol = readSolarVoltage(); // FIX
+            //float adc_vol = readSolarVoltage(); // FIX
+            float adc_vol = 0; // test
             if (adc_vol > maxSolarV)
             {
               maxSolarV = adc_vol;
@@ -123,9 +127,9 @@ void searching()
           break;
           
         if (Cid % 2 == 0) // if even, turn right
-          turnRight(90);
+          turnRight(46);
         else
-          turnLeft(90);
+          turnLeft(30);
         
     }
 
@@ -167,7 +171,7 @@ void searching()
     else
       Serial.println("ERROR: directionFlag != 0,1");
 
-    zTicks = sqrt(xTicks^2 + yTicks^2);
+    zTicks = sqrt((xTicks^2) + (yTicks^2));
 
     if (yTicks == 0)
       zDegrees = 90;
