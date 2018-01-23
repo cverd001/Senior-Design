@@ -23,7 +23,7 @@ void moveForward()
     analogWrite(x_speed,250); //250
     analogWrite(y_speed,250); //250
     analogWrite(a_speed,250); //250
-    analogWrite(b_speed,200); //165 Motor_b stronger causes veer
+    analogWrite(b_speed,165); //165 Motor_b stronger causes veer // was 200
         
     digitalWrite(motor_y2,LOW);
     digitalWrite(motor_y1,HIGH);
@@ -41,7 +41,7 @@ void moveRight()
     analogWrite(x_speed,255); //255
     analogWrite(y_speed,255); //255
     analogWrite(a_speed,255); //255
-    analogWrite(b_speed,210); //was 190
+    analogWrite(b_speed,190); //was 190
     
     digitalWrite(motor_y2,LOW);
     digitalWrite(motor_y1,HIGH);
@@ -57,7 +57,7 @@ void moveRight()
 void moveLeft()
 {
     analogWrite(x_speed,255); //255
-      analogWrite(y_speed,210); //was 190
+      analogWrite(y_speed,190); //was 190
     analogWrite(a_speed,255); //255
     analogWrite(b_speed,255); //255
     

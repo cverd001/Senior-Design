@@ -48,6 +48,7 @@ void searching()
     }
     case SEARCH:
     {
+      Serial.println("case Search");
       xmax = 5; // test
       ymax = 5; // test
     directionFlag = -1; // -1 is used as debugging check
@@ -57,6 +58,7 @@ void searching()
     {
         int maxTicks = (ymax - 1) * 30 * 1.6;  // 1.6 ticks per cm
         moveForward();
+        Serial.println("Moving Forward");
         delay(20);
         ticksL = 0;
         ticksR = 0;
@@ -89,10 +91,12 @@ void searching()
         brake();
         if (stopFlag)
           break;
+        delay(200);
         if (Cid % 2 == 0) // if even, turn right
           turnRight(46);
         else
           turnLeft(30);
+        delay(200);
           
         // Move forward 1 grid space
         moveForward();
@@ -125,11 +129,13 @@ void searching()
         brake();
         if (stopFlag)
           break;
-          
+
+        delay(200);
         if (Cid % 2 == 0) // if even, turn right
           turnRight(46);
         else
           turnLeft(30);
+        delay(200);
         
     }
 
