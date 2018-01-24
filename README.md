@@ -7,3 +7,12 @@
 5. Add all changes in the working directory to the staging area: ```git add .```
 6. Describe your updates: ```git commit -m "(your statements)"```
 7. Upload codes to the server: ```git push origin master```
+
+# Push to Branch Beta
+1. List all branches: ```git branch -a```
+2. Switch to branch "beta": ```git checkout beta```
+3. Download "beta": ```git pull origin beta```
+4. (Modify your codes)
+5. ```git add .```
+6. ```git commit -m "(...)"```
+7. ```git push origin beta```
