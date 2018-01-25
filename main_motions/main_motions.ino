@@ -131,9 +131,7 @@ void setup()
     attachInterrupt(encoder_pinRight, encoderCounterRight, CHANGE);
     Serial.begin(9600);
     ledSetupBlink();
-    turnRight(38);
     chirp();
-    turnRight(38);
     Serial.print("Speed: ");
     //Serial.println(speed);
     Serial.println("------------------------------------------------------");
@@ -143,18 +141,19 @@ void setup()
 void loop()
 {
   int i = 0;
-  turnRight(38);
-  delay(500);
-  turnRight(38);
-  delay(500);
+  //bootTone();
   while(true)
   {
     //Serial.println("Starting up");
     //moveForwardAdj2(46);
-    //searching();
-
-    turnLeft(28);
-    delay(1000);
+    //bootTone();
+    searching();
+    //turnRight(32); //correct for now
+    //turnLeft(23); //correct for now
+    //moveForwardAdj2(100);
+    //delay(2000);
+    //turnLeft(28);
+    //delay(1000);
     /*
     delay(500);
     chirp();
