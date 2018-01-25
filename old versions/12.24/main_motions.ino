@@ -17,12 +17,12 @@ const int x_speed = 14;
 const int motor_y1 = 35;
 const int motor_y2 = 36;
 const int y_speed = 16;
-const int motor_a1 = 28;//was pin4   
+const int motor_a1 = 4;      
 const int motor_a2 = 5;
 const int a_speed = 2;
 const int motor_b1 = 6;
 const int motor_b2 = 7;
-const int b_speed = 29;// was pin 3
+const int b_speed = 3;
 //**********************************************************
 const int ledPin = 13;
 //************* define interrupt related pins **************
@@ -131,7 +131,9 @@ void setup()
     attachInterrupt(encoder_pinRight, encoderCounterRight, CHANGE);
     Serial.begin(9600);
     ledSetupBlink();
+    turnRight(38);
     chirp();
+    turnRight(38);
     Serial.print("Speed: ");
     //Serial.println(speed);
     Serial.println("------------------------------------------------------");
@@ -141,19 +143,18 @@ void setup()
 void loop()
 {
   int i = 0;
-  //bootTone();
+  turnRight(38);
+  delay(500);
+  turnRight(38);
+  delay(500);
   while(true)
   {
     //Serial.println("Starting up");
     //moveForwardAdj2(46);
-    //bootTone();
-    searching();
-    //turnRight(32); //correct for now
-    //turnLeft(23); //correct for now
-    //moveForwardAdj2(100);
-    //delay(2000);
-    //turnLeft(28);
-    //delay(1000);
+    //searching();
+
+    turnLeft(28);
+    delay(1000);
     /*
     delay(500);
     chirp();
