@@ -1,5 +1,5 @@
 
-
+/*
 
 #define START 0
 #define STOP 1
@@ -16,12 +16,12 @@ int optCid = 0; // column number for desired location
 //int ticksL; // current tick count Left
 //int ticksR; // current tick count Right
 
-/* flag to check if robot was moving up/down or left/right
-   when max sunlight was acquired. If this flag is not 0 or
-   1 when checked results in error.
-   directionFlag = 1: was moving vertically
-   directionFlag = 0: was moving horizontally
-   directionFlag = anything else: ERROR */
+// flag to check if robot was moving up/down or left/right
+//   when max sunlight was acquired. If this flag is not 0 or
+//   1 when checked results in error.
+//   directionFlag = 1: was moving vertically
+//   directionFlag = 0: was moving horizontally
+//   directionFlag = anything else: ERROR 
 int directionFlag;
 
 int maxSolarV = 0;
@@ -321,4 +321,4 @@ void searching()
         }
       }
   }
-}
+}*/

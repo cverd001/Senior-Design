@@ -87,15 +87,15 @@ void setup()
     pinMode(25,OUTPUT);
     pinMode(26,OUTPUT);
     pinMode(27,OUTPUT);
-    pinMode(28,OUTPUT);
-    pinMode(29,OUTPUT);
+    //pinMode(28,OUTPUT);motor  
+    //pinMode(29,OUTPUT);motor
     pinMode(30,OUTPUT);
     pinMode(32,OUTPUT);
     
     pinMode(21,OUTPUT);
     pinMode(20,OUTPUT);
-    pinMode(19,OUTPUT);
-    pinMode(18,OUTPUT);
+    //pinMode(19,OUTPUT); used for clock for compass
+    //pinMode(18,OUTPUT); used for data for compass
     pinMode(15,OUTPUT);
     pinMode(13,OUTPUT);
     pinMode(33,OUTPUT);
@@ -140,76 +140,20 @@ void setup()
 
 void loop()
 {
-  int i = 0;
-  //bootTone();
+  //int i = 0;
+
   while(true)
   {
     //Serial.println("Starting up");
-    //moveForwardAdj2(46);
+    //moveForwardAdj(46);
     //bootTone();
-    searching();
+    PerformTraverseAlg();
     //turnRight(32); //correct for now
     //turnLeft(23); //correct for now
-    //moveForwardAdj2(100);
-    //delay(2000);
-    //turnLeft(28);
-    //delay(1000);
-    /*
-    delay(500);
-    chirp();
-    delay(500);
-    chirp();
-    delay(500);
-    bootTone();
-    delay(500);
-    startTone();*/
-    
-    //delay(6000);
-    /*
-    while (i<2){
-    delay(500);
-    moveForwardAdj2(46);  //was  48
-    delay(500);
-    moveForwardAdj2(46);
-    delay(500);
-    moveForwardAdj2(46);    
-    delay(500);
-    turnRight(33);
-    delay(500);
-    moveForwardAdj2(46);
-    delay(500);
-    turnRight(33);
-    delay(500);
-
-    moveForwardAdj2(46);
-    delay(500);
-    moveForwardAdj2(46);
-    delay(500);
-    moveForwardAdj2(46);    
-    delay(500);
-    turnLeft(27);
-    delay(500);
-    moveForwardAdj2(46);
-    delay(500);
-    turnLeft(27);
-    delay(500);
-
-    i = i +1;
-    }
-    
-    /*
-    turnRight(34);
-    delay(3000);
-    turnRight(34);
-    delay(5000);
-    turnLeft(27);
-    delay(3000);
-    turnLeft(27);
-    delay(5000);
     
     
     //chirp();
-   // delay(6000);*/
+
   }  
 }
 
