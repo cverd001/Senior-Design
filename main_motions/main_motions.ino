@@ -8,7 +8,10 @@
 #include "TeensyThreads.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <Wire.h>
+#include "LSM303.h"
 //#include "Buzzer.ino"
+
 
 //******************* define motor pins *********************
 const int motor_x1 = 37;      
@@ -35,6 +38,17 @@ const int buzzerPin = 17;
 //************** define solar related pins ****************
 const int adc_read = 20;
 ADC *adc = new ADC(); // adc object;
+//*******************Compass******************
+bool Calibrated = false;
+int16_t initial_x = 0;
+int16_t initial_y = 0;
+int16_t initial_z = 0;
+int compassCounter = 0;
+
+LSM303 compass;
+LSM303::vector<int16_t> running_min = {32767, 32767, 32767}, running_max = {-32768, -32768, -32768};
+
+char report[80];
 
 
 void encoderCounterLeft(){
@@ -75,7 +89,8 @@ void ledSetupBlink()
 
 void setup()
 {
-
+    delay(2000);
+    Serial.println("Entered main_motions void setup()");
     //----------------------Unused Pins--------------------------
     // set unused I/O pins to Output mode to save power
     pinMode(8,OUTPUT);
@@ -132,18 +147,54 @@ void setup()
     Serial.begin(9600);
     ledSetupBlink();
     chirp();
-    Serial.print("Speed: ");
-    //Serial.println(speed);
-    Serial.println("------------------------------------------------------");
+    //Compass Stuff------------
+    Wire.begin();
+    compass.init();
+    compass.enableDefault();
+    //----------------------------------
+    Serial.println("Exiting main_motions void setup()");
 } 
 
 
 void loop()
 {
-  //int i = 0;
+  Serial.println("Entered main_motions void loop()");
+
+  /*
+  Serial.print("Initial x value: ");
+  Serial.println(initial_x);
+  Serial.print("Initial y value: ");
+  Serial.println(initial_y);
+  Serial.print("Initial z value: ");
+  Serial.println(initial_z);
+  */
+
+  moveRight();
+  delay(10);
+  compass.read();
+  initial_x = compass.m.x;
+  initial_y = compass.m.y;
+  initial_z = compass.m.z;
+  /*
+  Serial.print("Initial x value: ");
+  Serial.println(initial_x);/
+  Serial.print("Initial y value: ");
+  Serial.println(initial_y);
+  Serial.print("Initial z value: ");
+  Serial.println(initial_z);
+
+  Serial.println("Entering Calibrate.calibrateCompass()");
+  */
+  while(Calibrated == false)
+  {
+    calibrateCompass();
+  }
+
+  heading();
 
   while(true)
   {
+    delay(10000); 
     //Serial.println("Starting up");
     //moveForwardAdj(46);
     //bootTone();

@@ -72,3 +72,22 @@ void turnRight(int degrees)
   }
   brake();
 }
+
+void moveRightComp(int degrees)
+{
+ 
+  ticksL = 0;
+  ticksR = 0;
+  
+  moveRight();
+  delay(15);
+  ticksL = 0;
+  ticksR = 0;  
+  while (true)
+  {
+    delay(1);
+    if (ticksL > degrees && ticksR > degrees)
+      break;
+  }
+  brake();
+}
