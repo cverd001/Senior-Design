@@ -108,3 +108,23 @@ void moveBack()   //remove?
     digitalWrite(motor_a2,HIGH);
     digitalWrite(motor_a1,LOW);
 }
+
+
+void moveRightSlow()
+{
+    analogWrite(x_speed,180); //255
+    analogWrite(y_speed,180); //255
+    analogWrite(a_speed,180); //255
+    analogWrite(b_speed,170); //was 190
+    
+    digitalWrite(motor_y2,LOW);
+    digitalWrite(motor_y1,HIGH);
+    digitalWrite(motor_x2,HIGH);
+    digitalWrite(motor_x1,LOW); 
+
+    digitalWrite(motor_b2,HIGH);
+    digitalWrite(motor_b1,LOW);
+    digitalWrite(motor_a2,LOW);
+    digitalWrite(motor_a1,HIGH);
+}
+

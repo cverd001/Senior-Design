@@ -2,6 +2,46 @@
 #include "LSM303.h"
 
 
+void calibrateCompassManual() {  
+  compass.read();
+ 
+  running_min.x = min(running_min.x, compass.m.x);
+  running_min.y = min(running_min.y, compass.m.y);
+  running_min.z = min(running_min.z, compass.m.z);
+
+  running_max.x = max(running_max.x, compass.m.x);
+  running_max.y = max(running_max.y, compass.m.y);
+  running_max.z = max(running_max.z, compass.m.z);
+  
+  snprintf(report, sizeof(report), "min: {%+6d, %+6d, %+6d}    max: {%+6d, %+6d, %+6d}",
+    running_min.x, running_min.y, running_min.z,
+    running_max.x, running_max.y, running_max.z);
+  compassCounter = compassCounter +1;
+  Serial.print("Compass counter: ");
+  Serial.println(compassCounter);
+  
+  Serial.println(report);
+  
+  Serial.print("Compass counter: ");
+  Serial.println(compassCounter);
+
+  Serial.print("Current x value = ");
+  Serial.println(compass.m.x);
+  Serial.print("Current y value = ");
+  Serial.println(compass.m.y);  
+  Serial.print("Current z value = ");
+  Serial.println(compass.m.z);
+
+
+  delay(10);   //initially 100
+
+}
+
+
+
+
+
+
 
 
 void calibrateCompass() {  
@@ -19,6 +59,8 @@ void calibrateCompass() {
     running_min.x, running_min.y, running_min.z,
     running_max.x, running_max.y, running_max.z);
   compassCounter = compassCounter +1;
+  Serial.print("Compass counter: ");
+  Serial.println(compassCounter);
 /*
   Serial.print("Compass counter: ");
   Serial.println(compassCounter);
@@ -40,10 +82,10 @@ void calibrateCompass() {
   delay(5);   //initially 100
 
   if(
-  (compass.m.x >= initial_x -65) && (compass.m.x <= initial_x + 65) &&
-  (compass.m.y >= initial_y -65) && (compass.m.y <= initial_y + 65) &&
+  (compass.m.x >= initial_x -35) && (compass.m.x <= initial_x + 35) &&
+  (compass.m.y >= initial_y -35) && (compass.m.y <= initial_y + 35) &&
 //  (compass.m.z >= initial_z -15) && (compass.m.z <= initial_z + 15) &&  
-  (compassCounter > 80)
+  (compassCounter > 150)
     )
   {
     brake();
@@ -109,7 +151,22 @@ void heading()
   float heading = compass.heading();
   
   Serial.println(heading);
-  delay(100);
+  //delay(100);
   }
+}
+void headingTest()
+{
+  while(true){
+    delay(100);
+    compass.read();
+    float heading = compass.heading();
+    brake();
+    //if(heading
+
+    moveRight();
+    delay(500);
+    brake();
+  }
+
 }
 

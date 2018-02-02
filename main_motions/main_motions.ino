@@ -158,8 +158,19 @@ void setup()
 
 void loop()
 {
-  Serial.println("Entered main_motions void loop()");
 
+//min: {  -297,   -647,   -291}    max: {  +396,    +46,   +445}
+
+  
+  while(true){
+  calibrateCompassManual();
+    //compass.m_min = (LSM303::vector<int16_t>){-297, -647, -291};
+    //compass.m_max = (LSM303::vector<int16_t>){396, 46, 445};
+  
+ //heading();
+  delay(20);
+  }
+  Serial.println("Entered main_motions void loop()");
   /*
   Serial.print("Initial x value: ");
   Serial.println(initial_x);
@@ -169,8 +180,8 @@ void loop()
   Serial.println(initial_z);
   */
 
-  moveRight();
-  delay(10);
+  moveRightSlow();
+  delay(60);
   compass.read();
   initial_x = compass.m.x;
   initial_y = compass.m.y;
@@ -192,20 +203,14 @@ void loop()
 
   heading();
 
-  while(true)
-  {
-    delay(10000); 
+    //delay(10000); 
     //Serial.println("Starting up");
     //moveForwardAdj(46);
     //bootTone();
-    PerformTraverseAlg();
+    //PerformTraverseAlg();
     //turnRight(32); //correct for now
     //turnLeft(23); //correct for now
-    
-    
-    //chirp();
-
-  }  
+    //chirp(); 
 }
 
 
