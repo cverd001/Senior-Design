@@ -9,8 +9,8 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <Wire.h>
-#include "LSM303.h"
-//#include "Buzzer.ino"
+//#include "LSM303.h"
+//#include "../main_motions/Buzzer.ino"
 
 
 //******************* define motor pins *********************
@@ -38,18 +38,20 @@ const int buzzerPin = 17;
 //************** define solar related pins ****************
 const int adc_read = 20;
 ADC *adc = new ADC(); // adc object;
+//*************** define photoresistor pins***************
+int photoR1Pin = 19;  //define a pin for Photo resistor
+int photoR2Pin = 18;
 //*******************Compass******************
+/*
 bool Calibrated = false;
 int16_t initial_x = 0;
 int16_t initial_y = 0;
 int16_t initial_z = 0;
 int compassCounter = 0;
-
 LSM303 compass;
 LSM303::vector<int16_t> running_min = {32767, 32767, 32767}, running_max = {-32768, -32768, -32768};
-
 char report[80];
-
+*/
 
 void encoderCounterLeft(){
   ticksL ++;
@@ -74,7 +76,7 @@ void ledBlink()
 void ledSetupBlink()
 {
   int blinkcount  = 0;
-   while( blinkcount < 50){
+   while( blinkcount < 30){
     digitalWrite(ledPin, HIGH);   // set the LED on
     delay(100);                  // wait for a second
     digitalWrite(ledPin, LOW);    // set the LED off
@@ -89,7 +91,7 @@ void ledSetupBlink()
 
 void setup()
 {
-    delay(2000);
+    delay(1000);
     Serial.println("Entered main_motions void setup()");
     //----------------------Unused Pins--------------------------
     // set unused I/O pins to Output mode to save power
@@ -109,7 +111,7 @@ void setup()
     
     pinMode(21,OUTPUT);
     pinMode(20,OUTPUT);
-    //pinMode(19,OUTPUT); used for clock for compass
+    //pinMode(19,OUTPUT); used for clock for compass jk for photoR
     //pinMode(18,OUTPUT); used for data for compass
     pinMode(15,OUTPUT);
     pinMode(13,OUTPUT);
@@ -135,78 +137,43 @@ void setup()
     pinMode(encoder_pinLeft, INPUT);
     pinMode(encoder_pinRight, INPUT);
     pinMode(buzzerPin, OUTPUT);
+    
+    pinMode(photoR1Pin,INPUT);  //photoresitor 1
+    pinMode(photoR2Pin,INPUT);
 
     pinMode(adc_read, INPUT);
+    
+    /*
     adc->setAveraging(16); // set number of averages
     adc->setResolution(16); // set bits of resolution
     adc->setConversionSpeed(ADC_CONVERSION_SPEED::VERY_LOW_SPEED); // change the conversion speed
     adc->setSamplingSpeed(ADC_SAMPLING_SPEED::MED_SPEED); // change the sampling speed
-    
+    */
     attachInterrupt(encoder_pinLeft, encoderCounterLeft, CHANGE);
     attachInterrupt(encoder_pinRight, encoderCounterRight, CHANGE);
     Serial.begin(9600);
     ledSetupBlink();
-    chirp();
+    //chirp();
     //Compass Stuff------------
+    /*
     Wire.begin();
     compass.init();
     compass.enableDefault();
+    */
     //----------------------------------
-    Serial.println("Exiting main_motions void setup()");
+    Serial.println("Exiting main_motions void setup()");    
 } 
 
 
-void loop()
-{
-
-//min: {  -297,   -647,   -291}    max: {  +396,    +46,   +445}
-
-  
-  while(true){
-  calibrateCompassManual();
-    //compass.m_min = (LSM303::vector<int16_t>){-297, -647, -291};
-    //compass.m_max = (LSM303::vector<int16_t>){396, 46, 445};
-  
- //heading();
-  delay(20);
-  }
-  Serial.println("Entered main_motions void loop()");
-  /*
-  Serial.print("Initial x value: ");
-  Serial.println(initial_x);
-  Serial.print("Initial y value: ");
-  Serial.println(initial_y);
-  Serial.print("Initial z value: ");
-  Serial.println(initial_z);
-  */
-
-  moveRightSlow();
-  delay(60);
-  compass.read();
-  initial_x = compass.m.x;
-  initial_y = compass.m.y;
-  initial_z = compass.m.z;
-  /*
-  Serial.print("Initial x value: ");
-  Serial.println(initial_x);/
-  Serial.print("Initial y value: ");
-  Serial.println(initial_y);
-  Serial.print("Initial z value: ");
-  Serial.println(initial_z);
-
-  Serial.println("Entering Calibrate.calibrateCompass()");
-  */
-  while(Calibrated == false)
-  {
-    calibrateCompass();
-  }
-
-  heading();
-
-    //delay(10000); 
+void loop(){
+    chirp();
+    PerformTraverseAlg();
+    //Serial.println(readPhotoresistors());
+    //bootTone();
+    delay(10000); 
     //Serial.println("Starting up");
     //moveForwardAdj(46);
-    //bootTone();
+    //chirp();
     //PerformTraverseAlg();
     //turnRight(32); //correct for now
     //turnLeft(23); //correct for now

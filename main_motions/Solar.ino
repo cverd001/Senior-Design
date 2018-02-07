@@ -9,13 +9,22 @@ float readSolarVoltage()
 }
 
 
-float readPhotoresistors()
+int readPhotoresistors()
 {
-  float x = 0;
- return x;
- 
+  int a = analogRead(photoR1Pin);
+  int b = analogRead(photoR2Pin);
+  int x = (a + b) /2;
+  return x;
 }
 
+int readPhotoRight(){
+  int r = analogRead(photoR2Pin);
+  return r;
+}
 
+int readPhotoLeft(){
+  int l = analogRead(photoR1Pin);
+  return l;
+}
 
 

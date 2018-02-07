@@ -91,3 +91,52 @@ void moveRightComp(int degrees)
   }
   brake();
 }
+
+void turnRightBurst(int count){
+  //delay(1000);
+  //chirp();
+    int counterI=0;
+    while(counterI<=count){ // 27
+      counterI++;
+      //Serial.println("turn right");
+      moveRightPower();
+      delay(50);
+      //Serial.println("brake");
+      brake();
+      delay(250);
+      //Serial.println(counterI);
+    }
+}
+
+void turnLeftBurst(int count){
+  //delay(1000);
+  //chirp();
+    int counterI=0;
+    while(counterI<=count){ // 27
+      counterI++;
+      //Serial.println("turn right");
+      moveLeftPower();
+      delay(50);
+      //Serial.println("brake");
+      brake();
+      delay(250);
+      //Serial.println(counterI);
+    }
+}
+
+
+void turnRightBurst2(){
+  delay(1000);
+  chirp();
+    int counterI=0;
+    while(counterI<=27){
+      counterI=counterI+1;
+      //Serial.println("turn right");
+      moveRightPower();
+      delay(50);
+      //Serial.println("brake");
+      brake();
+      delay(250);
+      //Serial.println(counterI);
+    }
+}

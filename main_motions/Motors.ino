@@ -128,3 +128,225 @@ void moveRightSlow()
     digitalWrite(motor_a1,HIGH);
 }
 
+
+void moveRightPower()
+{   
+    digitalWrite(motor_y2,LOW);
+    digitalWrite(motor_y1,HIGH);
+    digitalWrite(motor_x2,HIGH);
+    digitalWrite(motor_x1,LOW); 
+
+    digitalWrite(motor_b2,HIGH);
+    digitalWrite(motor_b1,LOW);
+    digitalWrite(motor_a2,LOW);
+    digitalWrite(motor_a1,HIGH);
+
+    analogWrite(x_speed,255); //255
+    analogWrite(y_speed,255); //255
+    analogWrite(a_speed,255); //255
+    analogWrite(b_speed,240); //was 190
+}
+
+void moveLeftPower()
+{
+    digitalWrite(motor_y2,HIGH);
+    digitalWrite(motor_y1,LOW);
+    digitalWrite(motor_x2,LOW);
+    digitalWrite(motor_x1,HIGH); 
+
+    digitalWrite(motor_b2,LOW);
+    digitalWrite(motor_b1,HIGH);
+    digitalWrite(motor_a2,HIGH);
+    digitalWrite(motor_a1,LOW);
+
+    analogWrite(x_speed,255); //255
+    analogWrite(y_speed,240); //was 190
+    analogWrite(a_speed,255); //255
+    analogWrite(b_speed,255); //255
+}
+
+void moveRightPower3()
+{   
+    digitalWrite(motor_y2,LOW);
+    digitalWrite(motor_y1,HIGH);
+    digitalWrite(motor_x2,HIGH);
+    digitalWrite(motor_x1,LOW); 
+
+    digitalWrite(motor_b2,HIGH);
+    digitalWrite(motor_b1,LOW);
+    digitalWrite(motor_a2,LOW);
+    digitalWrite(motor_a1,HIGH);
+
+    analogWrite(x_speed,0); //255
+    analogWrite(y_speed,255); //255
+    analogWrite(a_speed,0); //255
+    analogWrite(b_speed,240); //was 190
+}
+
+
+
+void moveRightPowerGradual()
+{
+
+    digitalWrite(motor_y2,LOW);
+    digitalWrite(motor_y1,HIGH);
+    digitalWrite(motor_x2,HIGH);
+    digitalWrite(motor_x1,LOW); 
+
+    digitalWrite(motor_b2,HIGH);
+    digitalWrite(motor_b1,LOW);
+    digitalWrite(motor_a2,LOW);
+    digitalWrite(motor_a1,HIGH);
+      
+    analogWrite(x_speed,4); //255
+    analogWrite(y_speed,4); //255
+    analogWrite(a_speed,4); //255
+    analogWrite(b_speed,3); //was 190
+    delay(3);
+
+    analogWrite(x_speed,8); //255
+    analogWrite(y_speed,8); //255
+    analogWrite(a_speed,8); //255
+    analogWrite(b_speed,5); //was 190
+    delay(3);
+
+    analogWrite(x_speed,15); //255
+    analogWrite(y_speed,15); //255
+    analogWrite(a_speed,15); //255
+    analogWrite(b_speed,10); //was 190
+    delay(3);
+
+    analogWrite(x_speed,35); //255
+    analogWrite(y_speed,35); //255
+    analogWrite(a_speed,35); //255
+    analogWrite(b_speed,20); //was 190
+    delay(3);
+    
+    analogWrite(x_speed,45); //255
+    analogWrite(y_speed,45); //255
+    analogWrite(a_speed,45); //255
+    analogWrite(b_speed,30); //was 190
+    delay(3);
+
+    analogWrite(x_speed,55); //255
+    analogWrite(y_speed,55); //255
+    analogWrite(a_speed,55); //255
+    analogWrite(b_speed,40); //was 190
+    delay(3);
+
+    analogWrite(x_speed,65); //255
+    analogWrite(y_speed,65); //255
+    analogWrite(a_speed,65); //255
+    analogWrite(b_speed,50); //was 190
+    delay(3);
+
+    analogWrite(x_speed,75); //255
+    analogWrite(y_speed,75); //255
+    analogWrite(a_speed,75); //255
+    analogWrite(b_speed,60); //was 190
+    delay(3);
+
+    analogWrite(x_speed,85); //255
+    analogWrite(y_speed,85); //255
+    analogWrite(a_speed,85); //255
+    analogWrite(b_speed,70); //was 190
+    delay(3);
+
+    analogWrite(x_speed,95); //255
+    analogWrite(y_speed,95); //255
+    analogWrite(a_speed,95); //255
+    analogWrite(b_speed,80); //was 190
+    delay(3);
+
+    analogWrite(x_speed,105); //255
+    analogWrite(y_speed,105); //255
+    analogWrite(a_speed,105); //255
+    analogWrite(b_speed,90); //was 190
+    delay(3);
+
+    analogWrite(x_speed,115); //255
+    analogWrite(y_speed,115); //255
+    analogWrite(a_speed,115); //255
+    analogWrite(b_speed,100); //was 190
+    delay(3);
+
+    analogWrite(x_speed,125); //255
+    analogWrite(y_speed,125); //255
+    analogWrite(a_speed,125); //255
+    analogWrite(b_speed,110); //was 190
+    delay(3);
+
+    analogWrite(x_speed,135); //255
+    analogWrite(y_speed,135); //255
+    analogWrite(a_speed,135); //255
+    analogWrite(b_speed,120); //was 190
+    delay(3);
+
+    analogWrite(x_speed,145); //255
+    analogWrite(y_speed,145); //255
+    analogWrite(a_speed,145); //255
+    analogWrite(b_speed,130); //was 190
+    delay(4);
+
+    analogWrite(x_speed,155); //255
+    analogWrite(y_speed,155); //255
+    analogWrite(a_speed,155); //255
+    analogWrite(b_speed,140); //was 190
+    delay(4);
+
+
+    analogWrite(x_speed,165); //255
+    analogWrite(y_speed,165); //255
+    analogWrite(a_speed,165); //255
+    analogWrite(b_speed,150); //was 190
+    delay(4);
+
+    analogWrite(x_speed,175); //255
+    analogWrite(y_speed,175); //255
+    analogWrite(a_speed,175); //255
+    analogWrite(b_speed,160); //was 190
+    delay(4);
+
+    analogWrite(x_speed,285); //255
+    analogWrite(y_speed,285); //255
+    analogWrite(a_speed,285); //255
+    analogWrite(b_speed,170); //was 190
+    delay(4);
+
+    analogWrite(x_speed,295); //255
+    analogWrite(y_speed,295); //255
+    analogWrite(a_speed,295); //255
+    analogWrite(b_speed,180); //was 190
+    delay(4);
+
+    analogWrite(x_speed,205); //255
+    analogWrite(y_speed,205); //255
+    analogWrite(a_speed,205); //255
+    analogWrite(b_speed,190); //was 190
+    delay(4);
+
+    analogWrite(x_speed,215); //255
+    analogWrite(y_speed,215); //255
+    analogWrite(a_speed,215); //255
+    analogWrite(b_speed,200); //was 190
+    delay(4);
+
+    analogWrite(x_speed, 235); //255
+    analogWrite(y_speed,235); //255
+    analogWrite(a_speed, 235); //255
+    analogWrite(b_speed, 220); //was 190
+    delay(4);
+
+    analogWrite(x_speed,245); //255
+    analogWrite(y_speed,245); //255
+    analogWrite(a_speed,245); //255
+    analogWrite(b_speed,230); //was 190
+    delay(4);
+   
+
+    analogWrite(x_speed,255); //255
+    analogWrite(y_speed,255); //255
+    analogWrite(a_speed,255); //255
+    analogWrite(b_speed,240); //was 190
+
+}
