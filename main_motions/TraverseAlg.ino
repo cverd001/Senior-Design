@@ -16,12 +16,12 @@ int directionFlag;
 int maxSolarV = 0;
 int adc_vol = 0;      // adc reading ...of solar panel?
 int avg_ldr = 0;    // photoresistors average reading
-const int thresholdV = 200;  // adc reading threshold !! WAS 14*** 900
+const int thresholdV = 900;  // adc reading threshold !! WAS 14*** 900
 const int ldr_threshold = 0;    // average photoresistors threshold
 
 int current_state = 0, previous_state = 0;
 int dtime = 100;          // delay time for each tracking movement
-int thresholdPhotoR = 700;
+int thresholdPhotoR = 2000;
 
 
 void PerformTraverseAlg()
@@ -30,7 +30,7 @@ void PerformTraverseAlg()
   delay(1000);
   Serial.println("Starting Traverse Alg");
   xmax = 3; // test
-  ymax = 3; // test
+  ymax = 5; // test
   directionFlag = -1; // -1 is used as debugging check
   int stopFlag = 0; //Flag to indicate if threshold sunlight voltage has been found
   maxSolarV = 0;
@@ -48,9 +48,10 @@ void PerformTraverseAlg()
       delay(1);
       if (ticksR % 8 == 0) // take reading every 5cm
       {
-        Serial.println("8 Ticks Reading");
-        int adc_vol = readPhotoresistors(); // change to double/float?
-        //float adc_vol = 0; // test
+        //Serial.println("8 Ticks Reading");
+        int adc_vol = readPhotoresistors();
+        Serial.println(adc_vol);
+        //int adc_vol = 0; // test
         if (adc_vol > thresholdPhotoR) //test function
         {
           Serial.print("photo threshold met");
@@ -76,11 +77,11 @@ void PerformTraverseAlg()
       }
       if (ticksR >= maxTicks && ticksL >= maxTicks)
       {
-        Serial.println("break");
+        //Serial.println("break");
         break;
       }
     }
-    Serial.println("break brake");
+    //Serial.println("break brake");
     brake();
     if (stopFlag)
       break;
@@ -88,9 +89,9 @@ void PerformTraverseAlg()
     if (Cid != (xmax - 1))
     {
       if (Cid % 2 == 0) // if even, turn right
-        turnRightBurst(19);
+        turnRightBurst(27);
       else
-        turnLeftBurst(17);
+        turnLeftBurst(27);
       delay(500);
 
       // Move forward 1 grid space
@@ -104,8 +105,9 @@ void PerformTraverseAlg()
         delay(1);
         if (ticksR % 8 == 0) // take reading every 5cm
         {
-          //float adc_vol = readSolarVoltage(); // FIX
-          float adc_vol = 0; // test
+          int adc_vol = readPhotoresistors();
+          Serial.println(adc_vol);
+          //int adc_vol = 0; // test
           if (adc_vol > maxSolarV)
           {
             maxSolarV = adc_vol;
@@ -128,19 +130,31 @@ void PerformTraverseAlg()
 
       delay(500);
       if (Cid % 2 == 0) // if even, turn right
-        turnRightBurst(19);
+        turnRightBurst(27);
       else
-        turnLeftBurst(17);
+        turnLeftBurst(27);
       delay(500);
 
     }
 
   }
+  delay(1000);
+  if (directionFlag)
+    Serial.println("Was moving up/down");
+  else
+    Serial.println("Was moving right");
+  Serial.println("MaxSolarV:");
+  Serial.println(maxSolarV);
+  Serial.println("OPTTICKS:");
+  Serial.println(optTicks);
+  Serial.println("OPTCID:");
+  Serial.println(optCid);
+  
   bootTone();
 
 
-  //if (!stopFlag)
-  //  ReturnToMax();
+  if (!stopFlag)
+    ReturnToMax();
 
   //Spin();
   //Monitor();
@@ -158,17 +172,30 @@ void ReturnToMax()
   {
     xTicks = (xmax - optCid - 1) * 48 - optTicks;
     if ((xmax - 1 + optCid) % 2 == 0)
+    {
+      Serial.println("Same edge of grid");
       yTicks = 0; // same edge of grid as max sunlight location
+    }
     else
-      yTicks = 48 * (ymax - 1); // opposite edge of grid
+    {
+      Serial.println("Opposite edge of grid");
+      yTicks = 48 * (ymax - 1); // opposite edge of grid      
+    }
   }
   else if (directionFlag == 1) // was moving up/down when max sunlight detected
   {
     xTicks = (xmax - optCid - 1) * 48;
     if (xmax % 2 == 0) // same x-edge of origin
+    {
+      Serial.println("Same edge of grid as origin");
       yTicks = optTicks;
+    }
     else
+    {
+      Serial.println("Opposite edge of grid as origin");
       yTicks = 48 * (ymax - 1) - optTicks;
+    }
+
   }
   else
     Serial.println("ERROR: directionFlag != 0,1");
@@ -180,12 +207,21 @@ void ReturnToMax()
   else
     zDegrees =  round( atan2 (xTicks, yTicks) * 180 / 3.14159265 ); // radians to degrees and rounding
 
-  if (xmax % 2 == 0)
-    turnRight(180 - zDegrees); // same x-edge of origin (on the bottom)
-  else
-    turnLeft(180 - zDegrees); // (on the top)
+  zDegrees = 180 - zDegrees;
 
-  //moveForwardTicks(zTicks); // FIX
+  Serial.println("Degrees:");
+  Serial.println(zDegrees);
+  Serial.println("Ticks:");
+  Serial.println(zTicks);
+
+  if (xmax % 2 == 0)
+    turnRightBurst((zDegrees/3.33)); // same x-edge of origin (on the bottom)
+  else
+    turnLeftBurst((zDegrees/3.33)); // (on the top)
+
+
+  
+  moveForwardAdj(zTicks); // FIX
 
   delay(1000);
 }
