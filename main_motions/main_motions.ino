@@ -38,9 +38,10 @@ const int buzzerPin = 17;
 //************** define solar related pins ****************
 const int adc_read = 20;
 ADC *adc = new ADC(); // adc object;
-//*************** define photoresistor pins***************
+//*************** define photoresistor/solar pins***************
 int photoR1Pin = 19;  //define a pin for Photo resistor
 int photoR2Pin = 18;
+int solarPin = 33;
 //*******************Compass******************
 /*
 bool Calibrated = false;
@@ -115,7 +116,7 @@ void setup()
     //pinMode(18,OUTPUT); used for data for compass
     pinMode(15,OUTPUT);
     pinMode(13,OUTPUT);
-    pinMode(33,OUTPUT);
+    //pinMode(33,OUTPUT); used for solar adc
     pinMode(34,OUTPUT);
 //---------------------------------------------------
   
@@ -140,6 +141,7 @@ void setup()
     
     pinMode(photoR1Pin,INPUT);  //photoresitor 1
     pinMode(photoR2Pin,INPUT);
+    pinMode(solarPin,INPUT);  //solar panel adc
 
     pinMode(adc_read, INPUT);
     
@@ -166,11 +168,14 @@ void setup()
 
 
 void loop(){
-    chirp();
-    PerformTraverseAlg();
+    //float value=readSolarVoltage();
+    moveRight();
+    delay(3000);
+    //chirp();
+    //PerformTraverseAlg();
     //Serial.println(readPhotoresistors());
     //bootTone();
-    delay(10000); 
+    delay(100); 
     //Serial.println("Starting up");
     //moveForwardAdj(46);
     //chirp();
