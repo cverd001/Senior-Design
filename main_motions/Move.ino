@@ -140,3 +140,45 @@ void turnRightBurst2(){
       //Serial.println(counterI);
     }
 }
+
+void moveYonly()
+{
+  ticksL = 0;
+  ticksR = 0;
+  
+  Yonly();
+  delay(15);
+  ticksL = 0;
+  ticksR = 0;  
+  while (true)
+  {
+    delay(5000);
+    Serial.println(ticksL);
+    break;
+  }
+  brake();
+  float motorSpeed = ticksL/5.0;
+  Serial.print("The final speed is: ");
+  Serial.println(motorSpeed);
+}
+
+void moveXonly()
+{
+  ticksL = 0;
+  ticksR = 0;
+  
+  Xonly();
+  delay(15);
+  ticksL = 0;
+  ticksR = 0;  
+  while (true)
+  {
+    delay(5000);
+    Serial.println(ticksR);
+    break;
+  }
+  brake();
+  float motorSpeed = ticksR/5.0;
+  Serial.print("The final speed is: ");
+  Serial.println(motorSpeed);
+}

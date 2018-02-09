@@ -160,9 +160,45 @@ void moveLeftPower()
     digitalWrite(motor_a1,LOW);
 
     analogWrite(x_speed,255); //255
-    analogWrite(y_speed,240); //was 190
+    analogWrite(y_speed,255); //was 190
     analogWrite(a_speed,255); //255
-    analogWrite(b_speed,255); //255
+    analogWrite(b_speed,240); //255
+}
+
+void Yonly()
+{
+    digitalWrite(motor_y2,LOW);
+    digitalWrite(motor_y1,HIGH);
+    digitalWrite(motor_x2,LOW);
+    digitalWrite(motor_x1,LOW); 
+
+    digitalWrite(motor_b2,LOW);
+    digitalWrite(motor_b1,LOW);
+    digitalWrite(motor_a2,LOW);
+    digitalWrite(motor_a1,LOW);  
+
+    analogWrite(x_speed,0); //255
+    analogWrite(y_speed,230); //was 190
+    analogWrite(a_speed,0); //255
+    analogWrite(b_speed,0); //255    
+}
+
+void Xonly()
+{
+    digitalWrite(motor_y2,LOW);
+    digitalWrite(motor_y1,LOW);
+    digitalWrite(motor_x2,LOW);
+    digitalWrite(motor_x1,HIGH); 
+
+    digitalWrite(motor_b2,LOW);
+    digitalWrite(motor_b1,LOW);
+    digitalWrite(motor_a2,LOW);
+    digitalWrite(motor_a1,LOW);  
+
+    analogWrite(x_speed,230); //255
+    analogWrite(y_speed,0); //was 190
+    analogWrite(a_speed,0); //255
+    analogWrite(b_speed,0); //255    
 }
 
 void moveRightPower3()
