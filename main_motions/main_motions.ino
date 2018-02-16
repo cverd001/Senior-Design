@@ -257,18 +257,20 @@ void setup()
 
 void loop(){
   
-  testIMU();
-    Serial.println("Entered Main void loop. Starting in 3 seconds.");
-    delay(3000);
-    //moveYonly();
-    //float value=readSolarVoltage();
-    //moveRight();
-    delay(9000);
-    //chirp();
-    //PerformTraverseAlg();
-    //Serial.println(readPhotoresistors());
-    //bootTone();
-    delay(100); 
+  //testIMU();
+  ledBlink();
+  calMoveRight();
+//    Serial.println("Entered Main void loop. Starting in 3 seconds.");
+//    delay(3000);
+//    //moveYonly();
+//    //float value=readSolarVoltage();
+//    //moveRight();
+//    delay(9000);
+//    //chirp();
+//    //PerformTraverseAlg();
+//    //Serial.println(readPhotoresistors());
+//    //bootTone();
+//    delay(100); 
     //Serial.println("Starting up");
     //moveForwardAdj(46);
     //chirp();
