@@ -299,8 +299,8 @@ void loop(){
   
   //testIMU();
   //ledBlink();
-  calMoveRight();
-  //calMoveLeft();
+  //calMoveRight();
+  calMoveLeft();
   //mpu.resetFIFO();
   //delay(500);
   //mpu.resetFIFO();

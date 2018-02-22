@@ -1,13 +1,15 @@
 void calMoveRight(){
   mpu.resetFIFO();
-  Serial.println("mpu Reset");
+  Serial.println("mpu FIFO Reset");
   float prevyaw = 0;
   float curryaw = 1;
+  Serial.println("Initializing IMU...");
   while(prevyaw < curryaw) {  // to wait until stable reading 
     testIMU();
     prevyaw = curryaw;
     curryaw = ypr[0] * 180/M_PI;
   }
+  Serial.println("Finished initializing IMU. Entering turning...");
   float inityaw = ypr[0] * 180/M_PI + 180;
   Serial.print("Initial yaw: ");
   Serial.println(inityaw);
@@ -36,13 +38,16 @@ void calMoveRight(){
 
 void calMoveLeft(){
   mpu.resetFIFO();
+  Serial.println("mpu FIFO Reset");
   float prevyaw = 0;
   float curryaw = 1;
+  Serial.println("Initializing IMU...");
   while(prevyaw < curryaw) {  // to wait until stable reading 
     testIMU();
     prevyaw = curryaw;
     curryaw = ypr[0] * 180/M_PI;
   }
+  Serial.println("Finished initializing IMU. Entering turning...");
   float inityaw = ypr[0] * 180/M_PI + 180;
   Serial.print("Initial yaw: ");
   Serial.println(inityaw);
