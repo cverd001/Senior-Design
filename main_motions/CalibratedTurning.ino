@@ -1,7 +1,8 @@
 void calMoveRight(){
-  mup.resetFIFO();
+  mpu.resetFIFO();
+  Serial.println("mpu Reset");
   float prevyaw = 0;
-  float curryaw = 0;
+  float curryaw = 1;
   while(prevyaw < curryaw) {  // to wait until stable reading 
     testIMU();
     prevyaw = curryaw;
@@ -11,26 +12,32 @@ void calMoveRight(){
   Serial.print("Initial yaw: ");
   Serial.println(inityaw);
   float calyaw = inityaw;
-     float temp = inityaw + 90;
-    if (temp > 360)
-      temp = temp - 360;
+  float temp = inityaw + 90;
+  if (temp > 360)
+    temp = temp - 360;
   moveRight();
   while (true) {
     testIMU();
     calyaw = ypr[0] * 180/M_PI + 180;
+    if(temp <= 90 && calyaw >= 270) {
+      calyaw = calyaw -360;
+    }
     Serial.print("calyaw: ");
     Serial.println(calyaw); 
-    if (calyaw > temp)
+    if (calyaw > temp){
+      Serial.println("Cal > Yaw");
       break;
+    }
   }
   brake();
-  delay(3000);
+  Serial.println("Braking");
+  delay(300);
 }
 
 void calMoveLeft(){
-  mup.resetFIFO();
+  mpu.resetFIFO();
   float prevyaw = 0;
-  float curryaw = 0;
+  float curryaw = 1;
   while(prevyaw < curryaw) {  // to wait until stable reading 
     testIMU();
     prevyaw = curryaw;
@@ -40,19 +47,22 @@ void calMoveLeft(){
   Serial.print("Initial yaw: ");
   Serial.println(inityaw);
   float calyaw = inityaw;
-     float temp = inityaw - 90;
-    if (temp < 0)
-      temp = temp + 360;
+  float temp = inityaw - 90;
+  if (temp < 0)
+    temp = temp + 360;
   moveLeft(); 
   while (true) {
     testIMU();
     calyaw = ypr[0] * 180/M_PI + 180;
+    if(temp >= 270 && calyaw <= 90) {
+      calyaw = calyaw + 360;
+    }
     Serial.print("calyaw: ");
     Serial.println(calyaw); 
-    if (calyaw > temp)
+    if (calyaw < temp)
       break;
   }
   brake();
-  delay(3000);
+  delay(300);
 }
 

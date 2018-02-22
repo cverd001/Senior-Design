@@ -201,7 +201,7 @@ void setup()
         Fastwire::setup(400, true);
     #endif
 //-------------------------------    
-    Serial.begin(9600);
+    Serial.begin(115200);
      while (!Serial);
     ledSetupBlink();
     //chirp();
@@ -298,10 +298,12 @@ void initMPU() {
 void loop(){
   
   //testIMU();
-  // ledBlink();
+  //ledBlink();
   calMoveRight();
-  delay(1000);
-  // mpu.resetFIFO();
+  //calMoveLeft();
+  //mpu.resetFIFO();
+  //delay(500);
+  //mpu.resetFIFO();
 //    Serial.println("Entered Main void loop. Starting in 3 seconds.");
 //    delay(3000);
 //    //moveYonly();
