@@ -40,9 +40,9 @@ void calMoveLeft(){
   Serial.print("Initial yaw: ");
   Serial.println(inityaw);
   float calyaw = inityaw;
-     float temp = inityaw + 90;
-    if (temp > 360)
-      temp = temp - 360;
+     float temp = inityaw - 90;
+    if (temp < 0)
+      temp = temp + 360;
   moveLeft(); 
   while (true) {
     testIMU();
