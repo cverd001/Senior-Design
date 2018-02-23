@@ -7,3 +7,7 @@
 5. Add all changes in the working directory to the staging area: ```git add .```
 6. Describe your updates: ```git commit -m "(your statements)"```
 7. Upload codes to the server: ```git push origin master```
+
+# Tips to avoiding conflicts
+1. Check repository status under current branch using ```git status```
+2. Discard changes in working directory under current branch(master) using ``` git checkout master```
