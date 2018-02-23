@@ -1,20 +1,15 @@
-float calMoveRight(float angle){
-  //angle = angle - 10;
+void calMoveRight(float angle){
+  angle = angle - 10;
   mpu.resetFIFO();
-  //Serial.println("mpu FIFO Reset");
-  float prevyaw = 0;
-  float curryaw = 1;
-  //Serial.println("Initializing IMU...");
-  while(prevyaw < curryaw) {  // to wait until stable reading 
-    testIMU();
-    prevyaw = curryaw;
-    curryaw = ypr[0] * 180/M_PI;
+  for(int i = 0; i < 600; i++) {
+  	testIMU();
   }
-  //Serial.println("Finished initializing IMU. Entering turning...");
+  Serial.println("Initializing IMU...");
+  Serial.println("Finished initializing IMU. Entering turning...");
   testIMU();
   float inityaw = ypr[0] * 180/M_PI + 180;
-  //Serial.print("Initial yaw: ");
-  //Serial.println(inityaw);
+  Serial.print("Initial yaw: ");
+  Serial.println(inityaw);
   float calyaw;
   float temp = inityaw + angle;
   if (temp > 360)
@@ -26,27 +21,22 @@ float calMoveRight(float angle){
     if(temp < angle && calyaw > 360 - angle) {
       calyaw = calyaw - 360;
     }
-    //Serial.print("calyaw: ");
-    //Serial.println(calyaw); 
+    Serial.print("calyaw: ");
+    Serial.println(calyaw); 
     if (calyaw >= temp){
       break;
     }
   }
   brake();
   delay(300);
-  return inityaw;
 }
 
-float calMoveLeft(float angle) {
+void calMoveLeft(float angle) {
+  angle = angle - 10;
   mpu.resetFIFO();
-  Serial.println("mpu FIFO Reset");
-  float prevyaw = 0;
-  float curryaw = 1;
   Serial.println("Initializing IMU...");
-  while(prevyaw < curryaw) {  // to wait until stable reading 
-    testIMU();
-    prevyaw = curryaw;
-    curryaw = ypr[0] * 180/M_PI;
+  for(int i = 0; i < 600; i++) {
+  	testIMU();
   }
   Serial.println("Finished initializing IMU. Entering turning...");
   testIMU();
@@ -73,7 +63,6 @@ float calMoveLeft(float angle) {
   }
   brake();
   delay(300);
-  return inityaw;
 }
 
 void calMoving(float inityaw, float angle, bool tDirection) {
