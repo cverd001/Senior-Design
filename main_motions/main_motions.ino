@@ -294,34 +294,16 @@ void initMPU() {
     }
 }
 
-
 void loop(){
-  
+  ledBlink();
+  chirp();
   //testIMU();
-  //ledBlink();
-  //calMoveRight();
-  calMoveLeft();
-  //mpu.resetFIFO();
-  //delay(500);
-  //mpu.resetFIFO();
-//    Serial.println("Entered Main void loop. Starting in 3 seconds.");
-//    delay(3000);
-//    //moveYonly();
-//    //float value=readSolarVoltage();
-//    //moveRight();
-//    delay(9000);
-//    //chirp();
-//    //PerformTraverseAlg();
-//    //Serial.println(readPhotoresistors());
-//    //bootTone();
-//    delay(100); 
-    //Serial.println("Starting up");
-    //moveForwardAdj(46);
-    //chirp();
-    //PerformTraverseAlg();
-    //turnRight(32); //correct for now
-    //turnLeft(23); //correct for now
-    //chirp(); 
+  float inityaw;
+  float angle;
+  inityaw = calMoveRight(angle);
+  calMoving(inityaw, angle, 0);
+  //calMoveLeft();
+  delay(1000);
 }
 
 
