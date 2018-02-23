@@ -9,5 +9,5 @@
 7. Upload codes to the server: ```git push origin master```
 
 # Tips to avoiding conflicts
-1. Check repository status under current branch using ```git status```
+1. Check repository status under current branch using ```git status``` (MUST AFTER PULL)
 2. Discard changes in working directory under current branch(master) using ``` git checkout master```
