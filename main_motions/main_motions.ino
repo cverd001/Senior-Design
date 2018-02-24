@@ -46,8 +46,8 @@ const int buzzerPin = 17;
 const int adc_read = 20;
 ADC *adc = new ADC(); // adc object;
 //*************** define photoresistor/solar pins***************
-int photoR1Pin = 31;  //define a pin for Photo resistor
-int photoR2Pin = 32 ;
+int photoR1Pin = 31;  //Left Photoresitor
+int photoR2Pin = 32 ; //Right Photoresitor
 int solarPin = 33;
 //*******************Compass******************
 /*
@@ -132,7 +132,8 @@ void ledSetupBlink()
 
 void setup()
 {
-    delay(1000);
+    chirp();
+    delay(3000);
     Serial.println("Entered main_motions void setup()");
     //----------------------Unused Pins--------------------------
     // set unused I/O pins to Output mode to save power
@@ -291,19 +292,31 @@ void initMPU() {
         Serial.print(F("DMP Initialization failed (code "));
         Serial.print(devStatus);
         Serial.println(F(")"));
+        bootTone();
     }
 }
 
 void loop(){
+  int spotsMax=0;
+//Spin();
+//Tracking();
+ PerformTraverseAlg();
+// Serial.println(readPhotoresistors());
+// Serial.print("left:");
+// Serial.println(readPhotoLeft());
+// Serial.print("right:");
+// Serial.println(readPhotoRight());
+//  delay(100);
   ledBlink();
-  chirp();
+  //chirp();
+  //PerformTraverseAlg();
   //testIMU();
-  float inityaw;
-  float angle;
-  inityaw = calMoveRight(angle);
-  calMoving(inityaw, angle, 0);
+  //float inityaw;
+  //float angle;
+  //inityaw = calMoveRight(angle);
+  //calMoving(inityaw, angle, 0);
   //calMoveLeft();
-  delay(1000);
+  //delay(1000);
 }
 
 

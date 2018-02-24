@@ -72,7 +72,7 @@ void calMoving(float inityaw, float angle, bool tDirection) {
   float idlyaw;                                     // ideal yaw after turning
   float err; 
   float tol = 5;
-  if(tDircection == 0) {                            // turned right 
+  if(tDirection == 0) {                            // turned right 
     idlyaw = inityaw + angle;
     idlyaw = (idlyaw < 360)?idlyaw:(idlyaw - 360);
     err = curryaw - idlyaw;                         // error of the turning
@@ -95,7 +95,7 @@ void calMoving(float inityaw, float angle, bool tDirection) {
         if(err >= -tol)  break;
       }
     }else {                                         // nice turning, do nothing
-      break;
+
     }
   }else {                                           // tDirection = 1, turned right 
     idlyaw = inityaw - angle;
@@ -120,7 +120,6 @@ void calMoving(float inityaw, float angle, bool tDirection) {
         if(err >= -tol)  break;
       }
     }else {                                         // nice turning, do nothing
-      break;
     }
   }
 }

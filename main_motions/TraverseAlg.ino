@@ -13,15 +13,15 @@ int optCid = 0; // column number for desired location
    directionFlag = anything else: ERROR */
 int directionFlag;
 
-int maxSolarV = 0;
+int maxPhotoV = 0;
 int adc_vol = 0;      // adc reading ...of solar panel?
 int avg_ldr = 0;    // photoresistors average reading
-const int thresholdV = 900;  // adc reading threshold !! WAS 14*** 900
+const int photoThresh = 380;  // adc reading threshold of photoresistors!! WAS 14*** 900
 const int ldr_threshold = 0;    // average photoresistors threshold
+int spotsMax = 0;     //max Solar voltage readings
 
 int current_state = 0, previous_state = 0;
 int dtime = 100;          // delay time for each tracking movement
-int thresholdPhotoR = 2000;
 
 
 void PerformTraverseAlg()
@@ -33,7 +33,7 @@ void PerformTraverseAlg()
   ymax = 5; // test
   directionFlag = -1; // -1 is used as debugging check
   int stopFlag = 0; //Flag to indicate if threshold sunlight voltage has been found
-  maxSolarV = 0;
+  maxPhotoV = 0;
 
   for (int Cid = 0; Cid < xmax; Cid++)
   {
@@ -52,15 +52,9 @@ void PerformTraverseAlg()
         int adc_vol = readPhotoresistors();
         Serial.println(adc_vol);
         //int adc_vol = 0; // test
-        if (adc_vol > thresholdPhotoR) //test function
+        if (adc_vol > maxPhotoV)
         {
-          Serial.print("photo threshold met");
-          brake();
-          delay(10000);
-        }
-        if (adc_vol > maxSolarV)
-        {
-          maxSolarV = adc_vol;
+          maxPhotoV = adc_vol;
           optTicks = (ticksL + ticksR) / 2;
           optCid = Cid;
           if (Cid % 2 == 1)
@@ -68,7 +62,7 @@ void PerformTraverseAlg()
           directionFlag = 1; // flag, bot was moving up/down
           Serial.println("Flag 1");
         }
-        if (maxSolarV >= thresholdV)
+        if (maxPhotoV >= photoThresh)
         {
           stopFlag = 1; // signals that max threshold has been reached
           Serial.println("Stop Flag");
@@ -89,9 +83,11 @@ void PerformTraverseAlg()
     if (Cid != (xmax - 1))
     {
       if (Cid % 2 == 0) // if even, turn right
-        turnRightBurst(27);
+        //turnRightBurst(27);
+        calMoveRight(90);
       else
-        turnLeftBurst(27);
+        calMoveLeft(90);
+       //turnLeftBurst(27);
       delay(500);
 
       // Move forward 1 grid space
@@ -108,14 +104,14 @@ void PerformTraverseAlg()
           int adc_vol = readPhotoresistors();
           Serial.println(adc_vol);
           //int adc_vol = 0; // test
-          if (adc_vol > maxSolarV)
+          if (adc_vol > maxPhotoV)
           {
-            maxSolarV = adc_vol;
+            maxPhotoV = adc_vol;
             optTicks = (ticksL + ticksR) / 2; // how many ticks to the right of Cid
             optCid = Cid;
             directionFlag = 0; // flag, bot was moving right
           }
-          if (maxSolarV >= thresholdV)
+          if (maxPhotoV >= photoThresh)
           {
             stopFlag = 1; // signals that max threshold has been reached
             break;
@@ -130,9 +126,11 @@ void PerformTraverseAlg()
 
       delay(500);
       if (Cid % 2 == 0) // if even, turn right
-        turnRightBurst(27);
+        calMoveRight(90);
+        //turnRightBurst(27);
       else
-        turnLeftBurst(27);
+        calMoveLeft(90);
+        //turnLeftBurst(27);
       delay(500);
 
     }
@@ -143,8 +141,8 @@ void PerformTraverseAlg()
     Serial.println("Was moving up/down");
   else
     Serial.println("Was moving right");
-  Serial.println("MaxSolarV:");
-  Serial.println(maxSolarV);
+  Serial.println("maxPhotoV:");
+  Serial.println(maxPhotoV);
   Serial.println("OPTTICKS:");
   Serial.println(optTicks);
   Serial.println("OPTCID:");
@@ -156,7 +154,13 @@ void PerformTraverseAlg()
   if (!stopFlag)
     ReturnToMax();
 
-  //Spin();
+  Spin();
+  chirp();
+  delay(5000);
+  chirp();
+  Tracking();
+  bootTone();
+  bootTone();
   //Monitor();
 }
 
@@ -200,7 +204,7 @@ void ReturnToMax()
   else
     Serial.println("ERROR: directionFlag != 0,1");
 
-  zTicks = sqrt((xTicks ^ 2) + (yTicks ^ 2));
+  zTicks = sqrt(sq(xTicks) + sq(yTicks));
 
   if (yTicks == 0)
     zDegrees = 90;
@@ -215,9 +219,9 @@ void ReturnToMax()
   Serial.println(zTicks);
 
   if (xmax % 2 == 0)
-    turnRightBurst((zDegrees/3.33)); // same x-edge of origin (on the bottom)
+    calMoveRight(zDegrees); // same x-edge of origin (on the bottom)
   else
-    turnLeftBurst((zDegrees/3.33)); // (on the top)
+    calMoveLeft(zDegrees); // (on the top)
 
 
   
@@ -228,18 +232,17 @@ void ReturnToMax()
 
 void Spin() // RESOLUTION = 12; 132 ticks for turnRight spinning 360; 11 ticks each
 {
-  int spots[12] = {};
-  int spotsMax = 0;
+  int spots[22] = {0};
   int i = 0;
   int deg_id = 0;
 
   ticksR = 0;
-  for (i = 0; i < 12; i++) {
+  for (i = 0; i < 22; i++) {
     ticksR = 0;
-    spots[i] = analogRead(photoR1Pin);
-    Serial.print("Photoresistor reading of current spot: ");
+    spots[i] = analogRead(solarPin);
+    Serial.print("Solar Panel Voltage reading of current spot: ");
     Serial.println(spots[i]);
-    if (spotsMax < spots[i]) {
+    if (spots[i] > spotsMax) {
       spotsMax = spots[i];
       deg_id = i;
       Serial.print("Setting max spot to: ");
@@ -248,7 +251,7 @@ void Spin() // RESOLUTION = 12; 132 ticks for turnRight spinning 360; 11 ticks e
     moveRight();
     while (true) {
       delay(1);
-      if (ticksR > 13) {
+      if (ticksR > 6) {
         break;
       }
     }
@@ -256,17 +259,17 @@ void Spin() // RESOLUTION = 12; 132 ticks for turnRight spinning 360; 11 ticks e
     Serial.print("i: ");
     Serial.println(i);
     brake();
-    delay(1000);
+    delay(250);
   }
 
   chirp();
   Serial.print("Spinning back to: ");
-  Serial.println(deg_id);
+  Serial.println(deg_id); 
   ticksR = 0;
   moveRight();
   while (true)  // spin back
   {
-    if (ticksR > 13 * deg_id)
+    if (ticksR > 6 * deg_id)
     {
       Serial.println("move Right (spinback)");
       Serial.print("deg_d = ");
@@ -277,20 +280,29 @@ void Spin() // RESOLUTION = 12; 132 ticks for turnRight spinning 360; 11 ticks e
     }
   }
   brake();
-  delay(10000);
+  delay(7000);
   Serial.println("Done (final brake)");
 }
 
-void Monitor()
+void Monitor() //check every 20 seconds if light conditions change
 {
+    chirp();
+    chirp();
   while (true)
   {
     delay(20000);     // delay 20 sec for demo
     adc_vol = readSolarVoltage();
-    if (adc_vol >= thresholdV)
+    if (adc_vol >= spotsMax-25){
+      chirp();
       continue;       // continue enjoy ample sunlights here!
-    else
+    }
+    else{
+      bootTone();
+      bootTone();
+      bootTone();
       break;
+    }
+
   }
 }
 
@@ -302,7 +314,7 @@ void Tracking()
   int deg_id = 0;
 
   while (true)
-  {
+  {      
     ldrR = analogRead(photoR2Pin);  // FIX
     ldrL = analogRead(photoR1Pin);   // FIX
     Serial.print("Right Value: ");
@@ -311,11 +323,16 @@ void Tracking()
     Serial.println(ldrL);
     diffRL = ldrL - ldrR;
     diffRL = abs(diffRL);
-    if (deg_id >= 44) // already checked 360 degrees, should continue searching the area
+    if (readSolarVoltage()<=spotsMax-15) // already checked 360 degrees, should continue searching the area
     {
-      //previous_state = current_state;
-      //current_state = START;
-      break;
+      bootTone();
+      delay(3000);
+      if(readSolarVoltage()<=spotsMax-15){
+        bootTone();
+        chirp();
+        bootTone();
+        break;
+      }
     }
     else if ( tol < diffRL ) // check if the difference is in the tolerance else change horizontal angle
     {
