@@ -67,17 +67,98 @@ playTone(1000, 50);
 }
 
 
-void startTone(){
+void boop(){
   playTone(900, 100);
   delay(30);
   playTone(1000, 100);
 
 }
 
+void loseTone(){
+  playTone(1000,150);
+  delay(40);
+  playTone(1300,200);
+  playTone(1500,500);
+}
+
+void victoryTone(){
+  playTone(430,150);
+  delay(30);
+  playTone(430,70);
+  playTone(220,700);
+}
+
+
 void frontWallTone(){
   playTone(200, 300);
 }
 
+void dying() {  // cat meow (emphasis ow "me")
+  uint16_t i;
+  playTone(5100,50);        // "m" (short)
+  playTone(394,180);        // "eee" (long)
+  for(i=990; i<1022; i+=2)  // vary "ooo" down
+     playTone(i,8);
+  playTone(5100,40);        // "w" (short)
+}
 
 
 
+void meow2() {  // cat meow (emphasis on "ow")
+  uint16_t i;
+  playTone(5100,55);       // "m" (short)
+  playTone(394,170);       // "eee" (long)
+  delay(30);               // wait a tiny bit
+  for(i=330; i<360; i+=2)  // vary "ooo" down
+     playTone(i,10);
+  playTone(5100,40);       // "w" (short)
+}
+ 
+void mew() {  // cat mew
+  uint16_t i;
+  playTone(5100,55);       // "m"   (short)
+  playTone(394,130);       // "eee" (long)
+  playTone(384,35);        // "eee" (up a tiny bit on end)
+  playTone(5100,40);       // "w"   (short)
+}
+
+void scale(){
+  playTone(1915,950);
+  delay(50);
+  playTone(1700,950);
+  delay(50);
+  playTone(1519,950);
+  delay(50);
+  playTone(1432,950);
+  delay(50);
+  playTone(1275,950);
+  delay(50);
+  playTone(1136,950);
+  delay(50);
+  playTone(1014,950);
+  delay(50);
+  playTone(956,1500);
+ }
+void ruff() {   // dog ruff
+  uint16_t i;
+  for(i=890; i<910; i+=2)     // "rrr"  (vary down)
+     playTone(i,3);
+  playTone(1664,150);         // "uuu" (hard to do)
+  playTone(12200,70);         // "ff"  (long, hard to do)
+}
+ 
+void arf() {    // dog arf
+  uint16_t i;
+  playTone(890,25);          // "a"    (short)
+  for(i=890; i<910; i+=2)    // "rrr"  (vary down)
+     playTone(i,5);
+  playTone(4545,80);         // intermediate
+  playTone(12200,70);        // "ff"   (shorter, hard to do)
+}
+ 
+
+void laser() {
+  for(uint16_t i=50; i<900; i++)  {
+     playTone(i,1);
+  }
+}

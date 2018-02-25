@@ -253,6 +253,8 @@ void setup()
   
     //----------------------------------
     Serial.println("Exiting main_motions void setup()");    
+    scale();
+
 } 
 
 void initMPU() {
@@ -297,17 +299,18 @@ void initMPU() {
 }
 
 void loop(){
-  int spotsMax=0;
+  //readSolarVoltage();
 //Spin();
 //Tracking();
- PerformTraverseAlg();
-// Serial.println(readPhotoresistors());
+chirp();
+PerformTraverseAlg();
+//Serial.println(readPhotoresistors());
 // Serial.print("left:");
 // Serial.println(readPhotoLeft());
 // Serial.print("right:");
 // Serial.println(readPhotoRight());
 //  delay(100);
-  ledBlink();
+//  ledBlink();
   //chirp();
   //PerformTraverseAlg();
   //testIMU();
