@@ -67,7 +67,7 @@ playTone(1000, 50);
 }
 
 
-void boop(){
+void boopTone(){
   playTone(900, 100);
   delay(30);
   playTone(1000, 100);

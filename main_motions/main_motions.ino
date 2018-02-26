@@ -21,17 +21,17 @@
 
 
 //******************* define motor pins *********************
-const int motor_x1 = 37; //switch to 11     
-const int motor_x2 = 38; //st 12
+const int motor_x1 = 11; //switch to 11     **37
+const int motor_x2 = 12; //st 12            **38
 const int x_speed = 14;
-const int motor_y1 = 35;  //st 24
-const int motor_y2 = 36;  //st 25
+const int motor_y1 = 24;  //st 24 **35
+const int motor_y2 = 25;  //st 25 **36
 const int y_speed = 16;
-const int motor_a1 = 28;     
-const int motor_a2 = 5; //st 27
+const int motor_a1 = 27;     
+const int motor_a2 = 28; //st 27 **5
 const int a_speed = 2;
-const int motor_b1 = 6;
-const int motor_b2 = 7;
+const int motor_b1 = 7;
+const int motor_b2 = 6;
 const int b_speed = 29;// was pin 3
 //**********************************************************
 const int ledPin = 13;  //default embedded LED
@@ -286,8 +286,10 @@ void loop(){
   //readSolarVoltage();
 //Spin();
 //Tracking();
-chirp();
+//chirp();
+//moveRight()
 PerformTraverseAlg();
+//PerformTraverseAlg();
 //Serial.println(readPhotoresistors());
 // Serial.print("left:");
 // Serial.println(readPhotoLeft());
