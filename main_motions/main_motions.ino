@@ -21,35 +21,42 @@
 
 
 //******************* define motor pins *********************
-const int motor_x1 = 37;      
-const int motor_x2 = 38;
+const int motor_x1 = 37; //switch to 11     
+const int motor_x2 = 38; //st 12
 const int x_speed = 14;
-const int motor_y1 = 35;
-const int motor_y2 = 36;
+const int motor_y1 = 35;  //st 24
+const int motor_y2 = 36;  //st 25
 const int y_speed = 16;
-const int motor_a1 = 28;//was pin4   
-const int motor_a2 = 5;
+const int motor_a1 = 28;     
+const int motor_a2 = 5; //st 27
 const int a_speed = 2;
 const int motor_b1 = 6;
 const int motor_b2 = 7;
 const int b_speed = 29;// was pin 3
 //**********************************************************
-const int ledPin = 13;
+const int ledPin = 13;  //default embedded LED
 //************* define interrupt related pins **************
 int encoder_pinLeft = 22;  // The pin the encoder is connected
-int encoder_pinRight = 23;  
+int encoder_pinRight = 23;
+  
 volatile int ticksL = 0;
 volatile int ticksR = 0;
 //*************** define buzzer indicator *****************
 const int buzzerPin = 17;
 //************** define solar related pins ****************
-const int adc_read = 20;
-ADC *adc = new ADC(); // adc object;
+int solarPin = 33;
 //*************** define photoresistor/solar pins***************
 int photoR1Pin = 31;  //Left Photoresitor
 int photoR2Pin = 32 ; //Right Photoresitor
-int solarPin = 33;
-//*******************Compass******************
+//*******************IMU******************
+int imuPin =39;
+//SCL0=19   Clock Pin for IMU
+//SDA0=18   Data Pin for IMU
+//*******************Raspberry Pi******************
+int teensy2piPin = 8;
+int pi2teensyPin =9;
+float maxLightYaw = 0;
+
 /*
 bool Calibrated = false;
 int16_t initial_x = 0;
@@ -64,9 +71,8 @@ char report[80];
 MPU6050 mpu;
 #define OUTPUT_READABLE_YAWPITCHROLL
 
-#define LED_PIN 13 // (Arduino is 13, Teensy is 11, Teensy++ is 6)
-bool blinkState = false;
-
+#define LED_PIN 13
+bool blinkState=false;
 // MPU control/status vars
 bool dmpReady = false;  // set true if DMP init was successful
 uint8_t mpuIntStatus;   // holds actual interrupt status byte from MPU
@@ -87,19 +93,16 @@ float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gra
 // packet structure for InvenSense teapot demo
 uint8_t teapotPacket[14] = { '$', 0x02, 0,0, 0,0, 0,0, 0,0, 0x00, 0x00, '\r', '\n' };
 
-
 volatile bool mpuInterrupt = false;     // indicates whether MPU interrupt pin has gone high
 void dmpDataReady() {
     mpuInterrupt = true;
 }
-
 
 void encoderCounterLeft(){
   ticksL ++;
   //Serial.print("Left Encoder Ticks: ");
   //Serial.println(ticksL);
 }
-
 void encoderCounterRight(){
   ticksR ++;
   //Serial.print("Rightt Encoder Ticks: ");
@@ -127,9 +130,7 @@ void ledSetupBlink()
    }
 }
 
-
-
-
+//---------------------------------------------------------------------------
 void setup()
 {
     chirp();
@@ -137,30 +138,17 @@ void setup()
     Serial.println("Entered main_motions void setup()");
     //----------------------Unused Pins--------------------------
     // set unused I/O pins to Output mode to save power
-    pinMode(8,OUTPUT);
-    pinMode(9,OUTPUT);
     pinMode(10,OUTPUT);
-    pinMode(11,OUTPUT);
-    pinMode(12,OUTPUT);
-    pinMode(24,OUTPUT);
-    pinMode(25,OUTPUT);
-    pinMode(26,OUTPUT);
-    pinMode(27,OUTPUT);
-    //pinMode(28,OUTPUT);motor  
-    //pinMode(29,OUTPUT);motor
-    pinMode(30,OUTPUT);
-    pinMode(32,OUTPUT);
-    
+    pinMode(30,OUTPUT);  
     pinMode(21,OUTPUT);
     pinMode(20,OUTPUT);
-    //pinMode(19,OUTPUT); used for clock for compass jk for photoR
-    //pinMode(18,OUTPUT); used for data for compass
     pinMode(15,OUTPUT);
-    pinMode(13,OUTPUT);
-    //pinMode(33,OUTPUT); used for solar adc
     pinMode(34,OUTPUT);
-//---------------------------------------------------
-  
+//----------------------Pins We Use--------------------------------
+    pinMode(teensy2piPin,OUTPUT);
+    pinMode(pi2teensyPin,INPUT);
+    
+    pinMode(ledPin,OUTPUT);   //teensy embedded LED
     pinMode(motor_x1,OUTPUT);
     pinMode(motor_x2,OUTPUT);
     pinMode(x_speed,OUTPUT);
@@ -184,8 +172,6 @@ void setup()
     pinMode(photoR2Pin,INPUT);
     pinMode(solarPin,INPUT);  //solar panel adc
 
-    pinMode(adc_read, INPUT);
-    
     /*
     adc->setAveraging(16); // set number of averages
     adc->setResolution(16); // set bits of resolution
@@ -250,11 +236,9 @@ void setup()
         Serial.print(devStatus);
         Serial.println(F(")"));
     }
-  
     //----------------------------------
     Serial.println("Exiting main_motions void setup()");    
     scale();
-
 } 
 
 void initMPU() {
@@ -277,7 +261,7 @@ void initMPU() {
 
         // enable Arduino interrupt detection
         Serial.println(F("Enabling interrupt detection (Arduino external interrupt 0)..."));
-        attachInterrupt(39, dmpDataReady, RISING);
+        attachInterrupt(imuPin, dmpDataReady, RISING);
         mpuIntStatus = mpu.getIntStatus();
 
         // set our DMP Ready flag so the main loop() function knows it's okay to use it

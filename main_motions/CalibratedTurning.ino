@@ -1,3 +1,4 @@
+
 void calMoveRight(float angle){
   angle = angle - 10;
   mpu.resetFIFO();
@@ -123,4 +124,70 @@ void calMoving(float inityaw, float angle, bool tDirection) {
     }
   }
 }
+
+
+
+void calMoveRightScan(float angle){
+  angle = angle - 10;
+  mpu.resetFIFO();
+  for(int i = 0; i <175; i++) {
+    testIMU();
+  }
+  Serial.println("Initializing IMU...");
+  Serial.println("Finished initializing IMU. Entering turning...");
+  testIMU();
+  float inityaw = ypr[0] * 180/M_PI + 180;
+  Serial.print("Initial yaw: ");
+  Serial.println(inityaw);
+  float calyaw;
+  float temp = inityaw + angle;
+  if (temp > 360)
+    temp = temp - 360;
+  moveRight();
+  while (true) {
+    testIMU();
+    calyaw = ypr[0] * 180/M_PI + 180;
+    if(temp < angle && calyaw > 360 - angle) {
+      calyaw = calyaw - 360;
+    }
+    if(digitalRead(pi2teensyPin)==HIGH){
+      maxLightYaw=calyaw;
+    }
+    Serial.print("calyaw: ");
+    Serial.println(calyaw); 
+    if (calyaw >= temp){
+      break;
+    }
+  }
+  brake();
+  delay(300);
+}
+
+void return2MaxLight(float maxYaw){
+  mpu.resetFIFO();
+  for(int i = 0; i <175; i++) {
+    testIMU();
+  }
+  Serial.println("Initializing IMU...");
+  Serial.println("Finished initializing IMU. Entering turning...");
+  testIMU();
+  float inityaw = ypr[0] * 180/M_PI + 180;
+  Serial.print("Initial yaw: ");
+  Serial.println(inityaw);
+  float calyaw;
+  moveRight();
+  while (true) {
+    testIMU();
+    calyaw = ypr[0] * 180/M_PI + 180;
+    
+    Serial.print("calyaw: ");
+    Serial.println(calyaw); 
+    if (calyaw >= maxYaw){
+      break;
+    }
+  }
+  brake();
+  delay(300);
+}
+
 
