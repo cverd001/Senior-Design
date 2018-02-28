@@ -145,8 +145,9 @@ void setup()
     pinMode(15,OUTPUT);
     pinMode(34,OUTPUT);
 //----------------------Pins We Use--------------------------------
-    pinMode(teensy2piPin,OUTPUT);
-    pinMode(pi2teensyPin,INPUT);
+    pinMode(teensy2piPin,OUTPUT);   //grey
+    digitalWrite(teensy2piPin,LOW);
+    pinMode(pi2teensyPin,INPUT);    //white
     
     pinMode(ledPin,OUTPUT);   //teensy embedded LED
     pinMode(motor_x1,OUTPUT);
@@ -286,9 +287,10 @@ void loop(){
   //readSolarVoltage();
 //Spin();
 //Tracking();
-//chirp();
+chirp();
+scan();
 //moveRight()
-PerformTraverseAlg();
+//PerformTraverseAlg();
 //PerformTraverseAlg();
 //Serial.println(readPhotoresistors());
 // Serial.print("left:");

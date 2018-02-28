@@ -157,7 +157,7 @@ void arf() {    // dog arf
 }
  
 
-void laser() {
+void laserTone() {
   for(uint16_t i=50; i<900; i++)  {
      playTone(i,1);
   }
