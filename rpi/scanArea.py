@@ -26,6 +26,7 @@ def setup():
     GPIO.setup(sigPin, GPIO.OUT)
     GPIO.setup(ctrlPin, GPIO.IN)
     GPIO.output(sigPin, GPIO.LOW)
+    print("Waiting for control signal...")
      
 def previewCam(camera):
     global spotsMax
@@ -66,7 +67,7 @@ def previewCam(camera):
                 curr_contour = cnt
                 if spotsMax < max_area:  # found a new max spots
                     GPIO.output(sigPin, GPIO.HIGH)
-                    time.sleep(1)
+                    time.sleep(2)
                     GPIO.output(sigPin, GPIO.LOW)
                     spotsMax = max_area
                     print("Signal sent! Freshing spotsMax to : ", spotsMax)
@@ -87,8 +88,8 @@ if __name__ == '__main__':
     setup()
     while True:
         # previewCam(camera)
-        if GPIO.input(ctrlPin) == 0:
+        if GPIO.input(ctrlPin) == 1:
             print("Control signal from teensy received, opening camera...")
             previewCam(camera)
-        # else:
-        #     time.sleep(100)
+        else:
+            time.sleep(1)
