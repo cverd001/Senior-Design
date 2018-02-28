@@ -122,7 +122,7 @@ void mew() {  // cat mew
   playTone(5100,40);       // "w"   (short)
 }
 
-void scale(){
+void scaleTone(){
   playTone(1915,950);
   delay(50);
   playTone(1700,950);
@@ -139,6 +139,25 @@ void scale(){
   delay(50);
   playTone(956,1500);
  }
+
+void scaleFastTone(){
+  playTone(1915,95);
+  delay(5);
+  playTone(1700,95);
+  delay(5);
+  playTone(1519,95);
+  delay(5);
+  playTone(1432,95);
+  delay(5);
+  playTone(1275,95);
+  delay(5);
+  playTone(1136,95);
+  delay(5);
+  playTone(1014,95);
+  delay(5);
+  playTone(956,150);
+ }
+ 
 void ruff() {   // dog ruff
   uint16_t i;
   for(i=890; i<910; i+=2)     // "rrr"  (vary down)

@@ -112,10 +112,10 @@ void moveBack()   //remove?
 
 void moveRightSlow()
 {
-    analogWrite(x_speed,180); //255
-    analogWrite(y_speed,180); //255
-    analogWrite(a_speed,180); //255
-    analogWrite(b_speed,170); //was 190
+    analogWrite(x_speed,170); //255
+    analogWrite(y_speed,170); //255
+    analogWrite(a_speed,170); //255
+    analogWrite(b_speed,160); //was 190
     
     digitalWrite(motor_y2,LOW);
     digitalWrite(motor_y1,HIGH);
@@ -127,6 +127,26 @@ void moveRightSlow()
     digitalWrite(motor_a2,LOW);
     digitalWrite(motor_a1,HIGH);
 }
+
+void moveLeftSlow()
+{
+    analogWrite(x_speed,170); //255
+    analogWrite(y_speed,170); //255
+    analogWrite(a_speed,170); //255
+    analogWrite(b_speed,160); //was 190
+    
+    digitalWrite(motor_y2,HIGH);
+    digitalWrite(motor_y1,LOW);
+    digitalWrite(motor_x2,LOW);
+    digitalWrite(motor_x1,HIGH); 
+
+    digitalWrite(motor_b2,LOW);
+    digitalWrite(motor_b1,HIGH);
+    digitalWrite(motor_a2,HIGH);
+    digitalWrite(motor_a1,LOW);
+}
+
+
 
 
 void moveRightPower()

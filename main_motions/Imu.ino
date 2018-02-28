@@ -45,14 +45,14 @@ void testIMU()
         #ifdef OUTPUT_READABLE_QUATERNION
             // display quaternion values in easy matrix form: w x y z
             mpu.dmpGetQuaternion(&q, fifoBuffer);
-            Serial.print("quat\t");
-            Serial.print(q.w);
-            Serial.print("\t");
-            Serial.print(q.x);
-            Serial.print("\t");
-            Serial.print(q.y);
-            Serial.print("\t");
-            Serial.println(q.z);
+//            Serial.print("quat\t");
+//            Serial.print(q.w);
+//            Serial.print("\t");
+//            Serial.print(q.x);
+//            Serial.print("\t");
+//            Serial.print(q.y);
+//            Serial.print("\t");
+//            Serial.println(q.z);
         #endif
 
         #ifdef OUTPUT_READABLE_EULER
@@ -72,12 +72,12 @@ void testIMU()
             mpu.dmpGetQuaternion(&q, fifoBuffer);
             mpu.dmpGetGravity(&gravity, &q);
             mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
-//            Serial.print("ypr\t");
-//            Serial.print(ypr[0] * 180/M_PI);
-//            Serial.print("\t");
-//            Serial.print(ypr[1] * 180/M_PI);
-//            Serial.print("\t");
-//            Serial.println(ypr[2] * 180/M_PI);
+            Serial.print("ypr\t");
+            Serial.print(ypr[0] * 180/M_PI);
+            Serial.print("\t");
+            Serial.print(ypr[1] * 180/M_PI);
+            Serial.print("\t");
+            Serial.println(ypr[2] * 180/M_PI);
         #endif
 
         #ifdef OUTPUT_READABLE_REALACCEL
@@ -86,12 +86,12 @@ void testIMU()
             mpu.dmpGetAccel(&aa, fifoBuffer);
             mpu.dmpGetGravity(&gravity, &q);
             mpu.dmpGetLinearAccel(&aaReal, &aa, &gravity);
-            Serial.print("areal\t");
-            Serial.print(aaReal.x);
-            Serial.print("\t");
-            Serial.print(aaReal.y);
-            Serial.print("\t");
-            Serial.println(aaReal.z);
+//            Serial.print("areal\t");
+//            Serial.print(aaReal.x);
+//            Serial.print("\t");
+//            Serial.print(aaReal.y);
+//            Serial.print("\t");
+//            Serial.println(aaReal.z);
         #endif
 
         #ifdef OUTPUT_READABLE_WORLDACCEL
@@ -102,12 +102,12 @@ void testIMU()
             mpu.dmpGetGravity(&gravity, &q);
             mpu.dmpGetLinearAccel(&aaReal, &aa, &gravity);
             mpu.dmpGetLinearAccelInWorld(&aaWorld, &aaReal, &q);
-            Serial.print("aworld\t");
-            Serial.print(aaWorld.x);
-            Serial.print("\t");
-            Serial.print(aaWorld.y);
-            Serial.print("\t");
-            Serial.println(aaWorld.z);
+//            Serial.print("aworld\t");
+//            Serial.print(aaWorld.x);
+//            Serial.print("\t");
+//            Serial.print(aaWorld.y);
+//            Serial.print("\t");
+//            Serial.println(aaWorld.z);
         #endif
     
         #ifdef OUTPUT_TEAPOT
@@ -130,3 +130,10 @@ void testIMU()
     }
 
 }
+
+
+
+
+
+
+

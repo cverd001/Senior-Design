@@ -1,11 +1,11 @@
 
 void calMoveRight(float angle){
-  angle = angle - 10;
+  angle = angle - 17;
   mpu.resetFIFO();
-  for(int i = 0; i <175; i++) {
+  for(int i = 0; i <100; i++) {
   	testIMU();
   }
-  Serial.println("Initializing IMU...");
+  //Serial.println("Initializing IMU...");
   Serial.println("Finished initializing IMU. Entering turning...");
   testIMU();
   float inityaw = ypr[0] * 180/M_PI + 180;
@@ -15,28 +15,28 @@ void calMoveRight(float angle){
   float temp = inityaw + angle;
   if (temp > 360)
     temp = temp - 360;
-  moveRight();
+  moveRightSlow();
   while (true) {
     testIMU();
     calyaw = ypr[0] * 180/M_PI + 180;
     if(temp < angle && calyaw > 360 - angle) {
       calyaw = calyaw - 360;
     }
-    Serial.print("calyaw: ");
-    Serial.println(calyaw); 
     if (calyaw >= temp){
       break;
     }
   }
   brake();
+  Serial.print("calyaw: ");
+  Serial.println(calyaw); 
   delay(300);
 }
 
 void calMoveLeft(float angle) {
-  angle = angle - 10;
+  angle = angle - 19;
   mpu.resetFIFO();
   Serial.println("Initializing IMU...");
-  for(int i = 0; i < 175; i++) {
+  for(int i = 0; i < 100; i++) {
   	testIMU();
   }
   Serial.println("Finished initializing IMU. Entering turning...");
@@ -48,7 +48,7 @@ void calMoveLeft(float angle) {
   float temp = inityaw - angle;
   if (temp < 0)
     temp = temp + 360;
-  moveLeft(); 
+  moveLeftSlow(); 
   while (true) {
     testIMU();
     calyaw = ypr[0] * 180/M_PI + 180;
@@ -190,4 +190,38 @@ void return2MaxLight(float maxYaw){
   delay(300);
 }
 
+
+
+
+void calMoveRightTest(float angle){
+  angle = angle;
+  mpu.resetFIFO();
+  delay(30);
+  testIMU();
+  delay(30);
+  float inityaw = ypr[0] * 180/M_PI + 180;
+//  Serial.print("Initial yaw: ");
+//  Serial.println(inityaw);
+  float calyaw;
+  float temp = inityaw + angle;
+  if (temp > 360){
+    temp = temp - 360;
+  }
+  moveRight();
+  while (true) {
+    testIMU();
+    calyaw = ypr[0] * 180/M_PI + 180;
+    delay(1);
+    if(temp < angle && calyaw > 360 - angle) {
+      calyaw = calyaw - 360;
+    }
+    if (calyaw >= temp){
+      break;
+    }
+  }
+  brake();
+  Serial.print("calyaw: ");
+  Serial.println(calyaw); 
+  delay(300);
+}
 

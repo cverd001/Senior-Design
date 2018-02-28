@@ -69,6 +69,7 @@ char report[80];
 */
 //******************IMU**************************
 MPU6050 mpu;
+//#define OUTPUT_READABLE_EULER
 #define OUTPUT_READABLE_YAWPITCHROLL
 
 #define LED_PIN 13
@@ -133,7 +134,6 @@ void ledSetupBlink()
 //---------------------------------------------------------------------------
 void setup()
 {
-    chirp();
     delay(3000);
     Serial.println("Entered main_motions void setup()");
     //----------------------Unused Pins--------------------------
@@ -181,6 +181,7 @@ void setup()
     */
     attachInterrupt(encoder_pinLeft, encoderCounterLeft, CHANGE);
     attachInterrupt(encoder_pinRight, encoderCounterRight, CHANGE);
+
 //---------------------IMU------------------------
  #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
         Wire.begin();
@@ -192,6 +193,7 @@ void setup()
     Serial.begin(115200);
      while (!Serial);
     ledSetupBlink();
+    scaleTone();
     //chirp();
     //Compass Stuff------------
     /*
@@ -239,7 +241,7 @@ void setup()
     }
     //----------------------------------
     Serial.println("Exiting main_motions void setup()");    
-    scale();
+    scaleFastTone();
 } 
 
 void initMPU() {
@@ -284,14 +286,28 @@ void initMPU() {
 }
 
 void loop(){
-  //readSolarVoltage();
+  mpu.resetFIFO();
+  for(int i = 0; i <1100; i++) {
+    testIMU();
+    Serial.println(i);
+  }
+
+//delay(2000);
+//calMoveLeft(90);
+//delay(1000);
+//calMoveLeft(90);
+//delay(2000);
+//calMoveLeft(90);
+//delay(2000);
+//calMoveLeft(90);
+//delay(1000);
+//readSolarVoltage();
 //Spin();
 //Tracking();
-chirp();
-scan();
+//chirp();
+//scan();
 //moveRight()
-//PerformTraverseAlg();
-//PerformTraverseAlg();
+PerformTraverseAlg();
 //Serial.println(readPhotoresistors());
 // Serial.print("left:");
 // Serial.println(readPhotoLeft());
