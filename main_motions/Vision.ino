@@ -50,6 +50,7 @@ void turnRightBurstImu(){
     Serial.print("Right turn number: ");
     Serial.println(i);
     if(digitalRead(pi2teensyPin)==HIGH){
+      bootTone();
       maxDegId=i;
       Serial.print("Raspberry Pi sent HIGH signal! New max set to ");
       Serial.println(i);
@@ -60,6 +61,7 @@ void turnRightBurstImu(){
 
 
 void scan(){
+  laserTone();
   startScan();
   turnRightBurstImu();  //finds best angle
   delay(30000);
@@ -69,5 +71,13 @@ void scan(){
   Tracking(); //fix
 }
 
+void scanPlus(){
+  for(int i = 0; i <1100; i++) {
+    testIMU();
+    Serial.println(i);
+  }
+  scaleTone();
+  scan();
 
+}
 

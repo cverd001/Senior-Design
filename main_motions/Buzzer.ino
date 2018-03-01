@@ -157,6 +157,45 @@ void scaleFastTone(){
   delay(5);
   playTone(956,150);
  }
+
+ void twoTone(){
+  playTone(1915,70);
+  delay(30);
+  playTone(1915,70);
+  delay(500);
+ }
+ void threeTone(){
+  playTone(1700,70);
+  delay(30);
+  playTone(1700,70);
+  delay(30);
+  playTone(1700,70);
+  delay(500);
+ }
+
+void fourTone(){
+  playTone(1519,70);
+  delay(30);
+  playTone(1519,70);
+  delay(30);
+  playTone(1519,70);
+  delay(30);
+  playTone(1519,70);
+  delay(500);
+ }
+ 
+void fiveTone(){
+  playTone(1432,70);   //1
+  delay(30);
+  playTone(1432,70);   //2
+  delay(30);
+  playTone(1432,70);   //3
+  delay(30);
+  playTone(1432,70);   //4
+  delay(30);
+  playTone(1432,70);   //5  
+  delay(500);  
+}
  
 void ruff() {   // dog ruff
   uint16_t i;

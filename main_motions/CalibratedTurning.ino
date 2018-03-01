@@ -33,7 +33,7 @@ void calMoveRight(float angle){
 }
 
 void calMoveLeft(float angle) {
-  angle = angle - 19;
+  angle = angle - 18;
   mpu.resetFIFO();
   Serial.println("Initializing IMU...");
   for(int i = 0; i < 100; i++) {

@@ -56,6 +56,9 @@ int imuPin =39;
 int teensy2piPin = 8;
 int pi2teensyPin =9;
 float maxLightYaw = 0;
+//********************Traverse Variables*************
+int rows = 3;
+int columns = 5; // grid dimensions
 
 /*
 bool Calibrated = false;
@@ -191,9 +194,9 @@ void setup()
     #endif
 //-------------------------------    
     Serial.begin(115200);
-     while (!Serial);
+    //while (!Serial);  //hopefully this isnt essential for IMU?
     ledSetupBlink();
-    scaleTone();
+    //scaleTone();
     //chirp();
     //Compass Stuff------------
     /*
@@ -286,11 +289,18 @@ void initMPU() {
 }
 
 void loop(){
-  mpu.resetFIFO();
-  for(int i = 0; i <1100; i++) {
-    testIMU();
-    Serial.println(i);
-  }
+scanPlus();
+
+//loadMenu();
+// // mpu.resetFIFO();
+//  for(int i = 0; i <1100; i++) {
+//    testIMU();
+//    Serial.println(i);
+//  }
+//PerformTraverseAlg();
+//delay(300);
+//bootTone();
+//Tracking();
 
 //delay(2000);
 //calMoveLeft(90);
@@ -307,7 +317,7 @@ void loop(){
 //chirp();
 //scan();
 //moveRight()
-PerformTraverseAlg();
+//PerformTraverseAlg();
 //Serial.println(readPhotoresistors());
 // Serial.print("left:");
 // Serial.println(readPhotoLeft());

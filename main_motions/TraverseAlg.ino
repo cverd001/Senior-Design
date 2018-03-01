@@ -1,4 +1,4 @@
-int xmax, ymax; // grid dimensions
+
 int optTicks = 0; // number of ticks for desired location
 int optCid = 0; // column number for desired location
 
@@ -30,15 +30,15 @@ void PerformTraverseAlg()
 
   delay(1000);
   Serial.println("Starting Traverse Alg");
-  xmax = 3; // test
-  ymax = 5; // test
+//  rows = 3; // test
+//  columns = 5; // test
   directionFlag = -1; // -1 is used as debugging check
   int stopFlag = 0; //Flag to indicate if threshold sunlight voltage has been found
   maxPhotoV = 0;
 
-  for (int Cid = 0; Cid < xmax; Cid++)
+  for (int Cid = 0; Cid < rows; Cid++)
   {
-    int maxTicks = (ymax - 1) * 30 * 1.6;  // 1.6 ticks per cm
+    int maxTicks = (columns - 1) * 30 * 1.6;  // 1.6 ticks per cm
     Serial.println("Moving Forward");
     moveForward();
     delay(200);//20
@@ -86,7 +86,7 @@ void PerformTraverseAlg()
     }
     
     delay(500);
-    if (Cid != (xmax - 1))
+    if (Cid != (rows - 1))
     {
       if (Cid % 2 == 0) // if even, turn right
         //turnRightBurst(27);
@@ -177,6 +177,7 @@ void PerformTraverseAlg()
 
 void ReturnToMax()
 {
+  boopTone();
   //using optTicks, optCid, directionFlag parameters
   int xTicks = 0; // number of ticks bot must move along x-axis
   int yTicks = 0; // number of ticks bot must move along y-axis
@@ -185,8 +186,8 @@ void ReturnToMax()
 
   if (directionFlag == 0) // was moving right when max sunlight detected
   {
-    xTicks = (xmax - optCid - 1) * 48 - optTicks;
-    if ((xmax - 1 + optCid) % 2 == 0)
+    xTicks = (rows - optCid - 1) * 48 - optTicks;
+    if ((rows - 1 + optCid) % 2 == 0)
     {
       Serial.println("Same edge of grid");
       yTicks = 0; // same edge of grid as max sunlight location
@@ -194,13 +195,13 @@ void ReturnToMax()
     else
     {
       Serial.println("Opposite edge of grid");
-      yTicks = 48 * (ymax - 1); // opposite edge of grid      
+      yTicks = 48 * (columns - 1); // opposite edge of grid      
     }
   }
   else if (directionFlag == 1) // was moving up/down when max sunlight detected
   {
-    xTicks = (xmax - optCid - 1) * 48;
-    if (xmax % 2 == 0) // same x-edge of origin
+    xTicks = (rows - optCid - 1) * 48;
+    if (rows % 2 == 0) // same x-edge of origin
     {
       Serial.println("Same edge of grid as origin");
       yTicks = optTicks;
@@ -208,7 +209,7 @@ void ReturnToMax()
     else
     {
       Serial.println("Opposite edge of grid as origin");
-      yTicks = 48 * (ymax - 1) - optTicks;
+      yTicks = 48 * (columns - 1) - optTicks;
     }
 
   }
@@ -229,7 +230,7 @@ void ReturnToMax()
   Serial.println("Ticks:");
   Serial.println(zTicks);
 
-  if (xmax % 2 == 0)
+  if (rows % 2 == 0)
     calMoveRight(zDegrees); // same x-edge of origin (on the bottom)
   else
     calMoveLeft(zDegrees); // (on the top)
@@ -321,7 +322,7 @@ void Tracking()
 {
   int ldrR, ldrL;
   int diffRL = 0;
-  int tol = 50;  // FIX
+  int tol = 70;  // FIX
   int deg_id = 0;
 
   while (true)
