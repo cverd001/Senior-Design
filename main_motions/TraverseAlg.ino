@@ -381,3 +381,10 @@ void Tracking()
   }
 }
 
+void traversePlus(){
+  for(int i = 0; i <1100; i++) {
+    testIMU();
+    Serial.println(i);
+  }
+  PerformTraverseAlg();
+}
