@@ -289,7 +289,8 @@ void initMPU() {
 }
 
 void loop(){
-scanPlus();
+printPhotoReadings();
+//scanPlus();
 
 //loadMenu();
 // // mpu.resetFIFO();
@@ -318,12 +319,7 @@ scanPlus();
 //scan();
 //moveRight()
 //PerformTraverseAlg();
-//Serial.println(readPhotoresistors());
-// Serial.print("left:");
-// Serial.println(readPhotoLeft());
-// Serial.print("right:");
-// Serial.println(readPhotoRight());
-//  delay(100);
+
 //  ledBlink();
   //chirp();
   //PerformTraverseAlg();

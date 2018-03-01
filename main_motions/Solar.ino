@@ -26,4 +26,11 @@ int readPhotoLeft(){
   return l;
 }
 
-
+void printPhotoReadings(){
+ Serial.println(readPhotoresistors());
+ Serial.print("left:");
+ Serial.println(readPhotoLeft());
+ Serial.print("right:");
+ Serial.println(readPhotoRight());
+  delay(100);
+}
