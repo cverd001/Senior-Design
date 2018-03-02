@@ -269,11 +269,11 @@ void imuRight2(float angle,float offSet) {
   if (destAngle > 180) {
     destAngle = destAngle - 360;
   }
-  moveRightMed();
+  moveRightSlow();
   while (true) {
     testIMU();
     currentAngle = ypr[0] * 180 / M_PI;
-    if ((currentAngle <= destAngle+0.4) && (currentAngle >= destAngle-0.4)){
+    if ((currentAngle <= destAngle+2) && (currentAngle >= destAngle-2)){
 //      Serial.print("Started at ");
 //      Serial.println(initialAngle);
 //      Serial.print("Stopped at ");
@@ -294,14 +294,14 @@ void imuLeft2(float angle,float offSet) {
   float currentAngle = initialAngle;
   float destAngle = initialAngle - angle;
 
-  if (destAngle < 0) {
+  if (destAngle < -180) {
     destAngle = destAngle + 360;
   }
-  moveLeftMed();
+  moveLeftSlow();
   while (true) {
     testIMU();
     currentAngle = ypr[0] * 180 / M_PI;
-    if ((currentAngle <= destAngle+0.4) && (currentAngle >= destAngle-0.4)){
+    if ((currentAngle <= destAngle+3) && (currentAngle >= destAngle-3)){
       break;
      }
   }

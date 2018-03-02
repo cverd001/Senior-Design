@@ -90,9 +90,9 @@ void PerformTraverseAlg()
     {
       if (Cid % 2 == 0) // if even, turn right
         //turnRightBurst(27);
-        imuRight2(90,0.98);
+        imuRight2(90,0.96);
       else
-        imuLeft2(90,0.98);
+        imuLeft2(90,0.96);
        //turnLeftBurst(27);
       delay(500);
 
@@ -137,10 +137,10 @@ void PerformTraverseAlg()
 
       delay(500);
       if (Cid % 2 == 0) // if even, turn right
-        imuRight2(90,0.98);
+        imuRight2(90,0.96);
         //turnRightBurst(27);
       else
-        imuLeft2(90,0.98);
+        imuLeft2(90,0.96);
         //turnLeftBurst(27);
       delay(500);
 

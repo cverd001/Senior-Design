@@ -60,6 +60,8 @@ float maxLightYaw = 0;
 int rows = 3;
 int columns = 5; // grid dimensions
 
+int menuFlag = 0;
+
 /*
 bool Calibrated = false;
 int16_t initial_x = 0;
@@ -248,8 +250,10 @@ void setup()
 } 
 
 void loop(){
-  laserTone();
-  scanPlus();
+ //readSolarVoltage();
+ algMenu();
+//  laserTone();
+//  scanPlus();
 //printPhotoReadings();
 //scanPlus();
 //laserTone();
@@ -275,8 +279,8 @@ void loop(){
 //delay(3000);
 
 //scanPlus();
-sizeMenu();
-traversePlus();
+//sizeMenu();
+//traversePlus();
 //delay(300);
 //bootTone();
 //Tracking();

@@ -24,12 +24,12 @@ void headToLight() {
   moveBack();
   while (true) {
     int lightness = readSolarVoltage();
-    if (lightness >= 150) {
+    if (lightness >= 95) {
       break;
     }
   }
   brake();
-  boopTone();
+  victoryTone();
   delay(2000);
 }
 
@@ -45,23 +45,21 @@ void turnRightBurstImu() {
 //  }
   testIMU();
   float initYaw = ypr[0] * 180 / M_PI + 180;
-  Serial.println("Finished initializing IMU. Entering turning...");
+//  Serial.println("Finished initializing IMU. Entering turning...");
   for (i = 0; i < 36; i++) {
     imuRight2(10,0.99);
     delay(600);
-    Serial.print("Right turn number: ");
-    Serial.println(i);
+//    Serial.print("Right turn number: ");
+//    Serial.println(i);
     if (digitalRead(pi2teensyPin) == HIGH) {
       bootTone();
       maxDegId = i;
       spotflag = 1;
-      Serial.print("Raspberry Pi sent HIGH signal! New max set to ");
-      Serial.println(i);
+//      Serial.print("Raspberry Pi sent HIGH signal! New max set to ");
+//      Serial.println(i);
     }
   }
-  scaleFastTone();
   laserTone();
-  scaleFastTone();
   Serial.println("Done with right turns!");
 }
 

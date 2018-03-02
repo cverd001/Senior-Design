@@ -4,35 +4,38 @@ void algMenu(){
   ticksR = 0;
   while(true){
     if(readPhotoresistors()<80){
-      if(ticksR<50 && ticksR>=25){
-        scanPlus();
-      }
-      else if(ticksR<25){
-        traversePlus();
-      }
+      break;   
     }
-    
     if(ticksR>50){
       ticksR=0;
     }
     else if(ticksR>25){
-      laserTone();
-      Serial.println("Search Mode: Sensor Search");
-      sizeMenu();
-      traversePlus();
-      
+      menuFlag=1;
+      bootTone();
+      delay(250);
+      Serial.println("Search Mode: Sensor Search");      
     }
    else if(ticksR<=25){
+      menuFlag=2;
       chirp();
       Serial.println("Search Mode: Computer Vision");
-      scanPlus();
+      delay(250);
+      
     }
   }
-
   laserTone();
-  delay(5000);
-  chirp();
+  delay(1000);
+  bootTone();
+  if(menuFlag==1){
+    bootTone();
+    sizeMenu(); 
+    traversePlus();  
+  }
   
+  else if(menuFlag==2){
+    laserTone();
+    scanPlus();
+  }
 }
 
 
@@ -83,5 +86,5 @@ void sizeMenu(){
   }
   laserTone();
   delay(5000);
-  chirp(); 
+   
 }
