@@ -38,7 +38,7 @@ void PerformTraverseAlg()
 
   for (int Cid = 0; Cid < rows; Cid++)
   {
-    int maxTicks = (columns - 1) * 30 * 1.6;  // 1.6 ticks per cm
+    int maxTicks = (columns - 1) * 39;
     Serial.println("Moving Forward");
     moveForward();
     delay(200);//20
@@ -90,9 +90,9 @@ void PerformTraverseAlg()
     {
       if (Cid % 2 == 0) // if even, turn right
         //turnRightBurst(27);
-        calMoveRight(90);
+        imuRight2(90,0.98);
       else
-        calMoveLeft(90);
+        imuLeft2(90,0.98);
        //turnLeftBurst(27);
       delay(500);
 
@@ -123,7 +123,7 @@ void PerformTraverseAlg()
             break;
           }
         }
-        if (ticksR >= 48 && ticksL >= 48) // 1 grid space
+        if (ticksR >= 39 && ticksL >= 39) // 1 grid space
           break;
       }
       brake();
@@ -137,10 +137,10 @@ void PerformTraverseAlg()
 
       delay(500);
       if (Cid % 2 == 0) // if even, turn right
-        calMoveRight(90);
+        imuRight2(90,0.98);
         //turnRightBurst(27);
       else
-        calMoveLeft(90);
+        imuLeft2(90,0.98);
         //turnLeftBurst(27);
       delay(500);
 
@@ -186,7 +186,7 @@ void ReturnToMax()
 
   if (directionFlag == 0) // was moving right when max sunlight detected
   {
-    xTicks = (rows - optCid - 1) * 48 - optTicks;
+    xTicks = (rows - optCid - 1) * 39 - optTicks;
     if ((rows - 1 + optCid) % 2 == 0)
     {
       Serial.println("Same edge of grid");
@@ -195,12 +195,12 @@ void ReturnToMax()
     else
     {
       Serial.println("Opposite edge of grid");
-      yTicks = 48 * (columns - 1); // opposite edge of grid      
+      yTicks = 39 * (columns - 1); // opposite edge of grid      
     }
   }
   else if (directionFlag == 1) // was moving up/down when max sunlight detected
   {
-    xTicks = (rows - optCid - 1) * 48;
+    xTicks = (rows - optCid - 1) * 39;
     if (rows % 2 == 0) // same x-edge of origin
     {
       Serial.println("Same edge of grid as origin");
@@ -209,7 +209,7 @@ void ReturnToMax()
     else
     {
       Serial.println("Opposite edge of grid as origin");
-      yTicks = 48 * (columns - 1) - optTicks;
+      yTicks = 39 * (columns - 1) - optTicks;
     }
 
   }
@@ -244,12 +244,13 @@ void ReturnToMax()
 
 void Spin() // RESOLUTION = 12; 132 ticks for turnRight spinning 360; 11 ticks each
 {
+  spotsMax=0;
   int spots[22] = {0};
   int i = 0;
   int deg_id = 0;
 
   ticksR = 0;
-  for (i = 0; i < 22; i++) {
+  for (i = 0; i < 20; i++) {
     ticksR = 0;
     spots[i] = analogRead(solarPin);
     Serial.print("Solar Panel Voltage reading of current spot: ");
@@ -257,10 +258,11 @@ void Spin() // RESOLUTION = 12; 132 ticks for turnRight spinning 360; 11 ticks e
     if (spots[i] > spotsMax) {
       spotsMax = spots[i];
       deg_id = i;
+      bootTone();
       Serial.print("Setting max spot to: ");
       Serial.println(deg_id);
     }
-    moveRight();
+    moveRightMed();
     while (true) {
       delay(1);
       if (ticksR > 6) {
@@ -271,23 +273,23 @@ void Spin() // RESOLUTION = 12; 132 ticks for turnRight spinning 360; 11 ticks e
     Serial.print("i: ");
     Serial.println(i);
     brake();
-    delay(200);
+    delay(300);
   }
 
   chirp();
   Serial.print("Spinning back to: ");
   Serial.println(deg_id); 
   ticksR = 0;
-  moveRight();
+  moveRightMed();
   while (true)  // spin back
   {
-    if (ticksR > 6 * deg_id)
+    if (ticksR > 6.5 * deg_id)
     {
-      Serial.println("move Right (spinback)");
-      Serial.print("deg_d = ");
-      Serial.println(deg_id);
-      Serial.print("TicksR = ");
-      Serial.println(ticksR);
+//      Serial.println("move Right (spinback)");
+//      Serial.print("deg_d = ");
+//      Serial.println(deg_id);
+//      Serial.print("TicksR = ");
+//      Serial.println(ticksR);
       break;
     }
   }
@@ -295,6 +297,39 @@ void Spin() // RESOLUTION = 12; 132 ticks for turnRight spinning 360; 11 ticks e
   delay(7000);
   Serial.println("Done (final brake)");
 }
+
+void spinImu() {
+  int i = 0;
+  int maxDegId = 0;
+  int currentSolar = 0;
+  float temp = 0;
+  spotsMax=0;
+  Serial.println("Initializing IMU...");
+  mpu.resetFIFO();
+  for(int i = 0; i < 175; i++) {
+    testIMU();
+  }
+  testIMU();
+  float initYaw = ypr[0] * 180/M_PI + 180;
+  Serial.println("Finished initializing IMU. Entering turning...");
+  for (i = 0; i < 36; i++){  
+    calMoveRight(20);
+    currentSolar = analogRead(solarPin);
+    Serial.print("Right turn number: ");
+    Serial.println(i);
+    if(currentSolar>spotsMax){
+      spotsMax=currentSolar;
+      bootTone();
+      maxDegId = i;
+//      spotflag = 1;
+      Serial.print("Raspberry Pi sent HIGH signal! New max set to ");
+      Serial.println(i);
+    }
+  }
+  Serial.println("Done with right turns!");
+}
+
+
 
 void Monitor() //check every 20 seconds if light conditions change
 {

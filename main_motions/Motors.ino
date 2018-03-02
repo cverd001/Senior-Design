@@ -93,10 +93,10 @@ void brake()
 
 void moveBack()   //remove?
 {
-    analogWrite(x_speed,100);   //PWM values need adjust
-    analogWrite(y_speed,100);
-    analogWrite(a_speed,100);
-    analogWrite(b_speed,100);
+    analogWrite(x_speed,200);   //PWM values need adjust
+    analogWrite(y_speed,200);
+    analogWrite(a_speed,200);
+    analogWrite(b_speed,200);
     
     digitalWrite(motor_y2,HIGH);
     digitalWrite(motor_y1,LOW);
@@ -127,6 +127,43 @@ void moveRightSlow()
     digitalWrite(motor_a2,LOW);
     digitalWrite(motor_a1,HIGH);
 }
+
+void moveRightMed()
+{
+    analogWrite(x_speed,210); //255
+    analogWrite(y_speed,210); //255
+    analogWrite(a_speed,210); //255
+    analogWrite(b_speed,185); //was 190
+    
+    digitalWrite(motor_y2,LOW);
+    digitalWrite(motor_y1,HIGH);
+    digitalWrite(motor_x2,HIGH);
+    digitalWrite(motor_x1,LOW); 
+
+    digitalWrite(motor_b2,HIGH);
+    digitalWrite(motor_b1,LOW);
+    digitalWrite(motor_a2,LOW);
+    digitalWrite(motor_a1,HIGH);
+}
+
+void moveLeftMed()
+{
+    analogWrite(x_speed,210); //255
+    analogWrite(y_speed,210); //255
+    analogWrite(a_speed,210); //255
+    analogWrite(b_speed,185); //was 190
+    
+    digitalWrite(motor_y2,HIGH);
+    digitalWrite(motor_y1,LOW);
+    digitalWrite(motor_x2,LOW);
+    digitalWrite(motor_x1,HIGH); 
+
+    digitalWrite(motor_b2,LOW);
+    digitalWrite(motor_b1,HIGH);
+    digitalWrite(motor_a2,HIGH);
+    digitalWrite(motor_a1,LOW);
+}
+
 
 void moveLeftSlow()
 {

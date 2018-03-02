@@ -3,7 +3,7 @@ void algMenu(){
   ticksL = 0;
   ticksR = 0;
   while(true){
-    if(readPhotoresistors()<100){
+    if(readPhotoresistors()<80){
       if(ticksR<50 && ticksR>=25){
         scanPlus();
       }
@@ -18,10 +18,14 @@ void algMenu(){
     else if(ticksR>25){
       laserTone();
       Serial.println("Search Mode: Sensor Search");
+      sizeMenu();
+      traversePlus();
+      
     }
    else if(ticksR<=25){
       chirp();
       Serial.println("Search Mode: Computer Vision");
+      scanPlus();
     }
   }
 
@@ -39,7 +43,7 @@ void sizeMenu(){
   ticksL = 0;
   ticksR = 0;
   while(true){
-    if(readPhotoresistors()<100){
+    if(readPhotoresistors()<80){
       Serial.print("Chosen Size is: ");
       Serial.println(rows);
       break;

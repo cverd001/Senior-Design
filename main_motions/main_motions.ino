@@ -212,10 +212,10 @@ void setup()
     Serial.println(F("Initializing DMP..."));
     devStatus = mpu.dmpInitialize();
   
-    mpu.setXGyroOffset(220);//we should set this probably
-    mpu.setYGyroOffset(76);
-    mpu.setZGyroOffset(-85);
-    mpu.setZAccelOffset(1788); // 1688 factory default for my test chip
+    mpu.setXGyroOffset(-9);   //orignally 220  -9
+    mpu.setYGyroOffset(-52);    //76             -52
+    mpu.setZGyroOffset(15);   //-85            15
+    mpu.setZAccelOffset(2130); // 1788          2130
 
       if (devStatus == 0) {
         // turn on the DMP, now that it's ready
@@ -247,62 +247,54 @@ void setup()
     scaleFastTone();
 } 
 
-void initMPU() {
-  Serial.println(F("Initializing I2C devices..."));
-    mpu.initialize();
-    Serial.println(F("Testing device connections..."));
-    Serial.println(mpu.testConnection() ? F("MPU6050 connection successful") : F("MPU6050 connection failed"));
-    Serial.println(F("Initializing DMP..."));
-    devStatus = mpu.dmpInitialize();
-  
-    mpu.setXGyroOffset(220);//we should set this probably
-    mpu.setYGyroOffset(76);
-    mpu.setZGyroOffset(-85);
-    mpu.setZAccelOffset(1788); // 1688 factory default for my test chip
-
-      if (devStatus == 0) {
-        // turn on the DMP, now that it's ready
-        Serial.println(F("Enabling DMP..."));
-        mpu.setDMPEnabled(true);
-
-        // enable Arduino interrupt detection
-        Serial.println(F("Enabling interrupt detection (Arduino external interrupt 0)..."));
-        attachInterrupt(imuPin, dmpDataReady, RISING);
-        mpuIntStatus = mpu.getIntStatus();
-
-        // set our DMP Ready flag so the main loop() function knows it's okay to use it
-        Serial.println(F("DMP ready! Waiting for first interrupt..."));
-        dmpReady = true;
-
-        // get expected DMP packet size for later comparison
-        packetSize = mpu.dmpGetFIFOPacketSize();
-    } else {
-        // ERROR!
-        // 1 = initial memory load failed
-        // 2 = DMP configuration updates failed
-        // (if it's going to break, usually the code will be 1)
-        Serial.print(F("DMP Initialization failed (code "));
-        Serial.print(devStatus);
-        Serial.println(F(")"));
-        bootTone();
-    }
-}
-
 void loop(){
-printPhotoReadings();
+  laserTone();
+  scanPlus();
+//printPhotoReadings();
 //scanPlus();
-
+//laserTone();
+//algMenu();
+//spinImu();
 //loadMenu();
-// // mpu.resetFIFO();
+//sizeMenu();
+//Serial.println("entered for loop");
 //  for(int i = 0; i <1100; i++) {
 //    testIMU();
-//    Serial.println(i);
-//  }
-//PerformTraverseAlg();
+//    //Serial.println(i);
+//  } 
+
+//delay(200);
+//chirp();  
+//imuRight2(90);
+//delay(3000);
+//imuRight2(90);
+//delay(3000);
+//imuRight2(90);
+//delay(3000);
+//imuRight2(90);
+//delay(3000);
+
+//scanPlus();
+sizeMenu();
+traversePlus();
 //delay(300);
 //bootTone();
 //Tracking();
-
+//
+//imuLeft(85);
+//delay(2000);
+//
+//imuLeft(85);
+//delay(2000);
+//
+//imuLeft(85);
+//delay(2000);
+//
+//imuLeft(85);
+//delay(2000);
+//
+//imuLeft(85);
+//delay(2000);
 //delay(2000);
 //calMoveLeft(90);
 //delay(1000);

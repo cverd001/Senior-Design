@@ -7,6 +7,7 @@
 //pi2teensyPin
 
 int spotflag = 0;
+int maxDegId = 0;
 
 void startScan() {
   digitalWrite(teensy2piPin, HIGH);  //start signal
@@ -20,10 +21,10 @@ void stopScan() {
 }
 
 void headToLight() {
-  moveForward();
-  while(true){
+  moveBack();
+  while (true) {
     int lightness = readSolarVoltage();
-    if (lightness >= 120){
+    if (lightness >= 150) {
       break;
     }
   }
@@ -36,21 +37,21 @@ void headToLight() {
 
 void turnRightBurstImu() {
   int i = 0;
-  int maxDegId = 0;
   float temp = 0;
   Serial.println("Initializing IMU...");
   mpu.resetFIFO();
-  for(int i = 0; i < 175; i++) {
-    testIMU();
-  }
+//  for (int i = 0; i < 175; i++) {
+//    testIMU();
+//  }
   testIMU();
-  float initYaw = ypr[0] * 180/M_PI + 180;
+  float initYaw = ypr[0] * 180 / M_PI + 180;
   Serial.println("Finished initializing IMU. Entering turning...");
-  for (i = 0; i < 36; i++){  
-    calMoveRight(20);
+  for (i = 0; i < 36; i++) {
+    imuRight2(10,0.99);
+    delay(600);
     Serial.print("Right turn number: ");
     Serial.println(i);
-    if(digitalRead(pi2teensyPin) == HIGH){
+    if (digitalRead(pi2teensyPin) == HIGH) {
       bootTone();
       maxDegId = i;
       spotflag = 1;
@@ -58,19 +59,28 @@ void turnRightBurstImu() {
       Serial.println(i);
     }
   }
+  scaleFastTone();
+  laserTone();
+  scaleFastTone();
   Serial.println("Done with right turns!");
 }
 
-
-void scan(){
-  laserTone();
+void returnToPos()
+{
+  imuRight2(maxDegId * 10.0,1.0);
+}
+void scan() {
+  mew();
   startScan();
   turnRightBurstImu();  //finds best angle
-  delay(30000);
   stopScan();
-  if(spotflag == 1) {   // spots detected, do heading 
-    //headToLight();        //goes to light
-    //Spin();
+  meow2();
+  delay(200);
+  if (spotflag == 1) {  // spots detected, do heading
+    returnToPos();
+    chirp();
+    headToLight();        //goes to light
+    Spin();
     victoryTone();
     Tracking(); //fix
   }
@@ -79,13 +89,12 @@ void scan(){
   }
 }
 
-void scanPlus(){
-  for(int i = 0; i < 1100; i++) {
+void scanPlus() {
+  for (int i = 0; i < 1100; i++) {
     testIMU();
     Serial.println(i);
   }
-  scaleTone();
+  scaleFastTone();
   scan();
-
 }
 
