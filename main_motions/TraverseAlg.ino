@@ -357,12 +357,12 @@ void Tracking()
 {
   int ldrR, ldrL;
   int diffRL = 0;
-  int tol = 70;  // FIX
+  int tol = 35;  // FIX
   int deg_id = 0;
 
   while (true)
   {      
-    ldrR = analogRead(photoR2Pin);  // FIX
+    ldrR = analogRead(photoR2Pin)*1.28;  // FIX
     ldrL = analogRead(photoR1Pin);   // FIX
     Serial.print("Right Value: ");
     Serial.print(ldrR);
@@ -388,7 +388,7 @@ void Tracking()
         moveLeft();
         while (true)    // RESOLUTION = 22; 132 ticks for turnRight spinning 360; 6 ticks each
         {
-          if (ticksR > 3)
+          if (ticksR > 1)
             break;
         }
         brake();
@@ -400,7 +400,7 @@ void Tracking()
         moveRight();
         while (true)
         {
-          if (ticksR > 3)
+          if (ticksR > 1)
             break;
         }
         brake();

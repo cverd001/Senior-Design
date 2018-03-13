@@ -1,7 +1,7 @@
 /*
- * Description: basic robotic car motion controlled by bluetooth 
- * Author: yidi
- * Created on Nov 10, 2017 10:47 pm
+ * Main_Motions
+ * Description: this page includes pins, setup, and our main loop
+ * 
  */
 #include <Arduino.h>
 #include <ADC.h>
@@ -9,58 +9,57 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <Wire.h>
-//#include "LSM303.h"
-//#include "../main_motions/Buzzer.ino"
+//#include "LSM303.h"   //removed while not using compass
 
-
+//----------Includes for IMU-----------------
 #include "I2Cdev.h"
 #include "MPU6050_6Axis_MotionApps20.h"
 #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
     #include "Wire.h"
 #endif
 
-
-//******************* define motor pins *********************
-const int motor_x1 = 11; //switch to 11     **37
-const int motor_x2 = 12; //st 12            **38
-const int x_speed = 14;
-const int motor_y1 = 24;  //st 24 **35
-const int motor_y2 = 25;  //st 25 **36
+//********************Teensy Pins*****************************
+const int ledPin = 13;  //default embedded LED pin
+//******************* Motor Pins *********************
+const int motor_x1 = 11;  //digital motor pin A
+const int motor_x2 = 12;  //digital motor pin B
+const int x_speed = 14;   //analog write PWM pin
+const int motor_y1 = 24;
+const int motor_y2 = 25;
 const int y_speed = 16;
 const int motor_a1 = 27;     
-const int motor_a2 = 28; //st 27 **5
+const int motor_a2 = 28;
 const int a_speed = 2;
 const int motor_b1 = 7;
 const int motor_b2 = 6;
-const int b_speed = 29;// was pin 3
-//**********************************************************
-const int ledPin = 13;  //default embedded LED
+const int b_speed = 29;
+
 //************* define interrupt related pins **************
-int encoder_pinLeft = 22;  // The pin the encoder is connected
+int encoder_pinLeft = 22;  //Encoder digital read
 int encoder_pinRight = 23;
   
-volatile int ticksL = 0;
+volatile int ticksL = 0;  //variable counter for encoder count reading
 volatile int ticksR = 0;
 //*************** define buzzer indicator *****************
 const int buzzerPin = 17;
 //************** define solar related pins ****************
-int solarPin = 33;
+int solarPin = 33;  //Solar Panel ADC reading
 //*************** define photoresistor/solar pins***************
-int photoR1Pin = 31;  //Left Photoresitor
-int photoR2Pin = 32 ; //Right Photoresitor
+int photoR1Pin = 31;  //Left Photoresitors
+int photoR2Pin = 32 ; //Right Photoresitors
 //*******************IMU******************
-int imuPin =39;
-//SCL0=19   Clock Pin for IMU
+int imuPin =39;   //interrupt pin
+//SCL0=19   Clock Pin for IMU (default pins, dont need definition)
 //SDA0=18   Data Pin for IMU
 //*******************Raspberry Pi******************
 int teensy2piPin = 8;
 int pi2teensyPin =9;
-float maxLightYaw = 0;
+
+float maxLightYaw = 0;    //optimal brightness heading
 //********************Traverse Variables*************
 int rows = 3;
 int columns = 5; // grid dimensions
-
-int menuFlag = 0;
+int menuFlag = 0; //for choosing menus, set in algMenu
 
 /*
 bool Calibrated = false;
@@ -115,7 +114,7 @@ void encoderCounterRight(){
   //Serial.println(ticksR);
 }
 
-void ledBlink()
+void ledBlink()   //1 blink, 2 seconds
 {
     digitalWrite(ledPin, HIGH);   // set the LED on
     delay(1000);                  // wait for a second
@@ -123,15 +122,14 @@ void ledBlink()
     delay(1000);                  // wait for a second
 }
 
-void ledSetupBlink()
+void ledSetupBlink()  //30 rapid blinks, 6 seconds
 {
   int blinkcount  = 0;
    while( blinkcount < 30){
-    digitalWrite(ledPin, HIGH);   // set the LED on
-    delay(100);                  // wait for a second
-    digitalWrite(ledPin, LOW);    // set the LED off
-    delay(100);                  // wait for a second
-
+    digitalWrite(ledPin, HIGH);
+    delay(100);
+    digitalWrite(ledPin, LOW);
+    delay(100);
     blinkcount = blinkcount +1;
    }
 }
@@ -142,7 +140,7 @@ void setup()
     delay(3000);
     Serial.println("Entered main_motions void setup()");
     //----------------------Unused Pins--------------------------
-    // set unused I/O pins to Output mode to save power
+    // set unused I/O pins to Output mode to save power **UPDATE**
     pinMode(10,OUTPUT);
     pinMode(30,OUTPUT);  
     pinMode(21,OUTPUT);
@@ -151,7 +149,7 @@ void setup()
     pinMode(34,OUTPUT);
 //----------------------Pins We Use--------------------------------
     pinMode(teensy2piPin,OUTPUT);   //grey
-    digitalWrite(teensy2piPin,LOW);
+    digitalWrite(teensy2piPin,LOW); //initialize off
     pinMode(pi2teensyPin,INPUT);    //white
     
     pinMode(ledPin,OUTPUT);   //teensy embedded LED
@@ -169,7 +167,6 @@ void setup()
     pinMode(motor_b2,OUTPUT);
     pinMode(b_speed,OUTPUT);
     
-    pinMode(ledPin, OUTPUT);
     pinMode(encoder_pinLeft, INPUT);
     pinMode(encoder_pinRight, INPUT);
     pinMode(buzzerPin, OUTPUT);
@@ -250,11 +247,13 @@ void setup()
 } 
 
 void loop(){
+Tracking();
+//printPhotoReadings();
  //readSolarVoltage();
- algMenu();
+ //algMenu();
 //  laserTone();
 //  scanPlus();
-//printPhotoReadings();
+
 //scanPlus();
 //laserTone();
 //algMenu();
