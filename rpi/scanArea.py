@@ -85,10 +85,14 @@ def destroy():
 
 if __name__ == '__main__':
     setup()
-    while True:
-        # previewCam(camera)
-        if GPIO.input(ctrlPin) == 0:
-            print("Control signal from teensy received, opening camera...")
-            previewCam(camera)
-        # else:
-        #     time.sleep(100)
+    try: 
+        while True:
+            # previewCam(camera)
+            if GPIO.input(ctrlPin) == 1:
+                print("Control signal from teensy received, opening camera...")
+                previewCam(camera)
+            else:
+                print("Waiting ...")
+                time.sleep(100)
+    except KeyboardInterrupt:
+        destroy()
