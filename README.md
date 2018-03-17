@@ -1,18 +1,24 @@
-# Git Command line Usage
+# SunE-Bot
 
-1. Create a new folder anywhere on your computer, for example, named "SunE_Bot"
-2. Enter the "SunE_Bot" folder and initialize the folder: ```git init```
-3. Add local repository to remote: ```git remote add origin https://github.com/cverd001/Senior-Design.git```
-4. Download the newest version of codes: ```git pull origin master```
-5. Add all changes in the working directory to the staging area: ```git add .```
-6. Describe your updates: ```git commit -m "(your statements)"```
-7. Upload codes to the server: ```git push origin master```
+## Project Description
+This is a design for a basic autonomous robot capable of repositioning itself to an optimal sun-lit location to self-sustain off solar power. This is meant to be a basic core – an ideal “charging mode” function which any mobile solar-powered robot can implement. This functionality is geared towards rover-type robots which operate without the presence of humans. Robots with our self-sustaining design are free to explore and gather data on their own without any assistance. By developing the basic infrastructure of light-search algorithm and solar-charging circuitry, our design can be applied to countless autonomous robots that exist and will be developed in the future. 
 
-## Tips to Avoiding Conflicts
-1. Check repository status under current branch using ```git status``` (MUST AFTER PULL)
-2. Discard changes in working directory under current branch(master) using ``` git checkout master``` or using ```git stash``` to go back to the clean working directory
+This design addresses current issues in renewable resource usage and in manpower. Development of this design implements and promotes a clean and reusable energy resource while also leaving the taxing, repetitive tasks of data-gathering to the robots. 
 
-## Branches
-1. The old versions are all in the branch "debug", using ```git checkout debug``` to switch to this branch
-2. If you want to go back to master, using ```git checkout master```
-3. Create a new branch: ```git checkout -b <NEW_BRANCH_NAME>```
+## Specification
+The majority of the algorithms and computation are performed on a Teensy 3.6 microcontroller (Arduino variant) which sends signals out to all other peripherals. Light sensors in the form of photoresistors (4) and a solar panel send input to the Teensy, which uses the data in its algorithm to find an optimal bright location. The Teensy controls 2 motor drivers, which each control 2 motors to reposition the entire mobile car. Other sensors involved in repositioning include motor encoders, an Inertial Measurement Unit (IMU),  and an action camera attached to a Raspberry Pi microcontroller. The solar panel is also attached to a charge controller and voltage regulator to constantly charge a battery at all times. Configuration of the Teensy and Raspberry Pi are done in C and Python, respectively. 
+
+The robot contains two different algorithms to detect light. The first is a Grid Search Algorithm (GSA). The robot traverses a set grid (x * y) and periodically reads voltages through its sensors. After the entire grid has been travelled through, the robot swivels and returns to the spot that returned the highest solar reading. The other algorithm is a Computer Vision Algorithm (CVA). This method has the robot spin in place and has the camera attached check for any bright spots before moving in that general bright direction. This method does not require the motors to be in use for as long, but requires more voltage to power the Raspberry Pi which in turn powers the camera. 
+
+At start up, the user has the option of selecting the algorithm to use, as well as how big of a grid to set if the GSA is selected. This is done through turning of the back left wheel and covering of the front photoresistors. 
+
+## Reference 
+1. [Arduino Project Hub. (2018). Getting started with IMU (6 DOF) motion sensor.](https://create.arduino.cc/projecthub/Aritro/getting-started-with-imu-6-dof-motion-sensor-96e066)
+2. [Cdn.sparkfun.com. (2018).](https://cdn.sparkfun.com/datasheets/Dev/Arduino/Boards/K66P144M180SF5RMV2.pdf)
+3. [Dlnmh9ip6v2uc.cloudfront.net.](https://dlnmh9ip6v2uc.cloudfront.net/datasheets/Prototyping/TP4056.pdf)
+4. [GitHub. (2018). kkpoon/CalibrateMPU6050.](https://github.com/kkpoon/CalibrateMPU6050)
+5. [Instructables.com. (2018). Mobile Sun-Seeking Robot.](http://www.instructables.com/id/Mobile-Sun-Seeking-Robot/)
+6. [Learn.adafruit.com. (2018). Overview | LSM303 Accelerometer + Compass Breakout | Adafruit Learning System. ](https://learn.adafruit.com/lsm303-accelerometer-slash-compass-breakout?view=all)
+7. [Sparkfun.com. (2018)](https://www.sparkfun.com/datasheets/Robotics/L298_H_Bridge.pdf)
+8. [Store.invensense.com. (2018).] (https://store.invensense.com/datasheets/invensense/MPU-6050_DataSheet_V3%204.pdf)
+9. [Raspberrypi.org. (2018).](https://www.raspberrypi.org/documentation/hardware/computemodule/RPI-CM-DATASHEET-V1_0.pdf)
