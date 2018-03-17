@@ -6,7 +6,7 @@ This is a design for a basic autonomous robot capable of repositioning itself to
 This design addresses current issues in renewable resource usage and in manpower. Development of this design implements and promotes a clean and reusable energy resource while also leaving the taxing, repetitive tasks of data-gathering to the robots. 
 
 ## Specification
-![Block Diagram](https://imgur.com/a/nSho2)
+![Block Diagram](https://i.imgur.com/wgcb6Uj.png)
 
 The majority of the algorithms and computation are performed on a Teensy 3.6 microcontroller (Arduino variant) which sends signals out to all other peripherals. Light sensors in the form of photoresistors (4) and a solar panel send input to the Teensy, which uses the data in its algorithm to find an optimal bright location. The Teensy controls 2 motor drivers, which each control 2 motors to reposition the entire mobile car. Other sensors involved in repositioning include motor encoders, an Inertial Measurement Unit (IMU),  and an action camera attached to a Raspberry Pi microcontroller. The solar panel is also attached to a charge controller and voltage regulator to constantly charge a battery at all times. Configuration of the Teensy and Raspberry Pi are done in C and Python, respectively. 
 
