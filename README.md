@@ -13,12 +13,12 @@ The robot contains two different algorithms to detect light. The first is a Grid
 At start up, the user has the option of selecting the algorithm to use, as well as how big of a grid to set if the GSA is selected. This is done through turning of the back left wheel and covering of the front photoresistors. 
 
 ## Reference 
-1. [Arduino Project Hub. (2018). Getting started with IMU (6 DOF) motion sensor.](https://create.arduino.cc/projecthub/Aritro/getting-started-with-imu-6-dof-motion-sensor-96e066)
-2. [Cdn.sparkfun.com. (2018).](https://cdn.sparkfun.com/datasheets/Dev/Arduino/Boards/K66P144M180SF5RMV2.pdf)
-3. [Dlnmh9ip6v2uc.cloudfront.net.](https://dlnmh9ip6v2uc.cloudfront.net/datasheets/Prototyping/TP4056.pdf)
-4. [GitHub. (2018). kkpoon/CalibrateMPU6050.](https://github.com/kkpoon/CalibrateMPU6050)
-5. [Instructables.com. (2018). Mobile Sun-Seeking Robot.](http://www.instructables.com/id/Mobile-Sun-Seeking-Robot/)
-6. [Learn.adafruit.com. (2018). Overview | LSM303 Accelerometer + Compass Breakout | Adafruit Learning System. ](https://learn.adafruit.com/lsm303-accelerometer-slash-compass-breakout?view=all)
-7. [Sparkfun.com. (2018)](https://www.sparkfun.com/datasheets/Robotics/L298_H_Bridge.pdf)
-8. [Store.invensense.com. (2018).] (https://store.invensense.com/datasheets/invensense/MPU-6050_DataSheet_V3%204.pdf)
-9. [Raspberrypi.org. (2018).](https://www.raspberrypi.org/documentation/hardware/computemodule/RPI-CM-DATASHEET-V1_0.pdf)
+1. [Get Start with IMU (6 DOF)](https://create.arduino.cc/projecthub/Aritro/getting-started-with-imu-6-dof-motion-sensor-96e066)
+2. [K66 Sub-Family Reference Manual](https://cdn.sparkfun.com/datasheets/Dev/Arduino/Boards/K66P144M180SF5RMV2.pdf)
+3. [TP-4056](https://dlnmh9ip6v2uc.cloudfront.net/datasheets/Prototyping/TP4056.pdf)
+4. [CalibrateMPU6050.](https://github.com/kkpoon/CalibrateMPU6050)
+5. [Mobile Sun-Seeking Robot.](http://www.instructables.com/id/Mobile-Sun-Seeking-Robot/)
+6. [LSM303 Accelerometer + Compass Breakout](https://learn.adafruit.com/lsm303-accelerometer-slash-compass-breakout?view=all)
+7. [L298N H Bridge](https://www.sparkfun.com/datasheets/Robotics/L298_H_Bridge.pdf)
+8. [MPU6050](https://store.invensense.com/datasheets/invensense/MPU-6050_DataSheet_V3%204.pdf)
+9. [Raspberrypi](https://www.raspberrypi.org/documentation/hardware/computemodule/RPI-CM-DATASHEET-V1_0.pdf)
