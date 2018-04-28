@@ -17,7 +17,7 @@ At start up, the user has the option of selecting the algorithm to use, as well 
 A demo video of this project can be found [here.](https://www.youtube.com/watch?v=_fC8kR_6XM4)
 
 ## Authors
-SunE-Bot was developed by [Christopher Verdegan](https://www.linkedin.com/in/christopher-verdegan-440b85119), [James Thi](https://www.linkedin.com/in/james-thi) and [Yidi Wang](https://github.com/yidiwang21).
+SunE-Bot was developed by [Christopher Verdegan](https://www.linkedin.com/in/christopher-verdegan-440b85119), [James Thi](https://www.linkedin.com/in/james-thi) and [Yidi Wang](https://www.linkedin.com/in/yidi-wang-315649119).
 
 ## References 
 1. [Get Start with IMU (6 DOF)](https://create.arduino.cc/projecthub/Aritro/getting-started-with-imu-6-dof-motion-sensor-96e066)
